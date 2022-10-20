@@ -19,6 +19,7 @@ class BaseViewController: UIViewController {
         configureUI()
         configureLayout()
         setupDelegate()
+        bindData()
     }
 
     // MARK: - Configure UI & Layout
@@ -29,4 +30,8 @@ class BaseViewController: UIViewController {
     
     func configureLayout() { }
     func setupDelegate() { }
+    
+    // MARK: - Bind Data
+    
+    func bindData() { }
 }
