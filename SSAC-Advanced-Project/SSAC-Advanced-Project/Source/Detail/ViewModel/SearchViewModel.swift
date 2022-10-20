@@ -1,5 +1,5 @@
 //
-//  Photo.swift
+//  DetailViewModel.swift
 //  SSAC-Advanced-Project
 //
 //  Created by heerucan on 2022/10/20.
@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct Photo {
+final class DetailViewModel {
     
 }

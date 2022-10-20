@@ -1,5 +1,5 @@
 //
-//  PhotoViewController.swift
+//  DetailViewController.swift
 //  SSAC-Advanced-Project
 //
 //  Created by heerucan on 2022/10/20.
@@ -7,10 +7,11 @@
 
 import UIKit
 
-final class PhotoViewController: BaseViewController {
+final class DetailViewController: BaseViewController {
     
     // MARK: - Property
     
+//    let collectionView
     
     // MARK: - LifeCycle
     
