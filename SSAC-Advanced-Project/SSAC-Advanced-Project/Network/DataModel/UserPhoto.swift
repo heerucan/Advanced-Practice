@@ -11,10 +11,24 @@ import Foundation
 
 struct UserPhoto: Codable {
     let id: String
-    let welcomeDescription: String?
+    let urls: Urls
+    let likes: Int
+    let description: String?
 
     enum CodingKeys: String, CodingKey {
-        case id
-        case welcomeDescription = "description"
+        case id, urls, likes
+        case description = "description"
+    }
+}
+
+// MARK: - Urls
+
+struct Urls: Codable {
+    let raw, full, regular, small: String
+    let thumb, smallS3: String
+
+    enum CodingKeys: String, CodingKey {
+        case raw, full, regular, small, thumb
+        case smallS3 = "small_s3"
     }
 }

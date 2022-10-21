@@ -1,5 +1,5 @@
 //
-//  SearchPhoto.swift
+//  SearchUser.swift
 //  SSAC-Advanced-Project
 //
 //  Created by heerucan on 2022/10/20.
@@ -7,9 +7,9 @@
 
 import Foundation
 
-// MARK: - SearchPhoto
+// MARK: - SearchUser
 
-struct SearchPhoto: Codable, Hashable {
+struct SearchUser: Codable, Hashable {
     let total, totalPages: Int
     let results: [SearchResult]
     
@@ -20,27 +20,15 @@ struct SearchPhoto: Codable, Hashable {
     }
 }
 
-// MARK: - Result
+// MARK: - SearchResult
 
 struct SearchResult: Codable, Hashable {
     let id: String
-    let urls: Urls
     let likes: Int
+    let username: String
 
     enum CodingKeys: String, CodingKey {
         case id
-        case urls, likes
-    }
-}
-
-// MARK: - Urls
-
-struct Urls: Codable, Hashable {
-    let raw, full, regular, small: String
-    let thumb, smallS3: String
-
-    enum CodingKeys: String, CodingKey {
-        case raw, full, regular, small, thumb
-        case smallS3 = "small_s3"
+        case likes, username
     }
 }
