@@ -17,7 +17,7 @@ final class DetailSupplementaryView: UICollectionReusableView {
     // MARK: - Propery
     
     let label = UILabel().then {
-        $0.font = .systemFont(ofSize: 18)
+        $0.font = .boldSystemFont(ofSize: 20)
         $0.text = "사용자가 게시한 작업물"
     }
     
@@ -38,8 +38,8 @@ final class DetailSupplementaryView: UICollectionReusableView {
         addSubview(label)
         
         label.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
-            make.bottom.equalToSuperview().inset(10)
+            make.leading.equalToSuperview().inset(5)
+            make.bottom.equalToSuperview().inset(5)
         }
     }
 }

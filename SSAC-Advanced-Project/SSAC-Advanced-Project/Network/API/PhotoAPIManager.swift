@@ -7,7 +7,11 @@
 
 import Foundation
 
+import Alamofire
+
 final class UnsplashAPIManager {
     static let shared = UnsplashAPIManager()
     private init() { }
+    
+    // MARK: - 
 }
