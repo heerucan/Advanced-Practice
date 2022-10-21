@@ -42,10 +42,14 @@ import Alamofire
     }
     
     // MARK: - asURLRequest
-        
+    
     func asURLRequest() throws -> URLRequest {
-        let url = baseURL.appendingPathComponent(path)
-        var request = URLRequest(url: url)
+        let url = try URL(string: baseURL
+                            .appendingPathComponent(path)
+                            .asURL()
+                            .absoluteString
+                            .removingPercentEncoding!)
+        var request = URLRequest(url: url!)
         request.method = method
         request.setValue(APIKey.authorization, forHTTPHeaderField: "Authorization")
         return request

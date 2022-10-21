@@ -12,12 +12,11 @@ import Foundation
 struct UserPhoto: Codable {
     let id: String
     let urls: Urls
-    let likes: Int
-    let description: String?
+    let welcomeDescription: String?
 
     enum CodingKeys: String, CodingKey {
-        case id, urls, likes
-        case description = "description"
+        case id, urls
+        case welcomeDescription = "description"
     }
 }
 

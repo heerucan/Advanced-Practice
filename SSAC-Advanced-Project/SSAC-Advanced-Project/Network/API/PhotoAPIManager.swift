@@ -21,10 +21,10 @@ final class PhotoAPIManager {
         AF.request(PhotoRouter.getSearchUser(query: query))
             .validate(statusCode: 200..<500).responseDecodable(of: SearchUser.self) { response in
             let statusCode = response.response?.statusCode
+                
             switch response.result {
             case .success(let value):
                 completion(value, statusCode, nil)
-                print(value)
 
             case .failure(let error):
                 completion(nil, statusCode, error)
@@ -32,12 +32,13 @@ final class PhotoAPIManager {
         }
     }
     
-    // MARK: - GET : user 여기만 잘들어오고
+    // MARK: - GET : user
     
     func getUser(username: String, completion: @escaping completion<User>) {
         AF.request(PhotoRouter.getUserProfile(username: username))
-            .responseDecodable(of: User.self) { response in
+            .validate(statusCode: 200..<500).responseDecodable(of: User.self) { response in
             let statusCode = response.response?.statusCode
+                
             switch response.result {
             case .success(let value):
                 completion(value, statusCode, nil)
@@ -50,14 +51,14 @@ final class PhotoAPIManager {
     
     // MARK: - GET : userPhoto
     
-    func getUserPhoto(username: String, completion: @escaping completion<UserPhoto>) {
+    func getUserPhoto(username: String, completion: @escaping completion<[UserPhoto]>) {
         AF.request(PhotoRouter.getUserPhotos(username: username))
-            .responseDecodable(of: UserPhoto.self) { response in
+            .validate(statusCode: 200..<500).responseDecodable(of: [UserPhoto].self) { response in
             let statusCode = response.response?.statusCode
+                
             switch response.result {
             case .success(let value):
                 completion(value, statusCode, nil)
-                print(value)
 
             case .failure(let error):
                 completion(nil, statusCode, error)
