@@ -27,6 +27,11 @@ final class SearchViewController: BaseViewController {
     }
     
     // MARK: - Configure UI & Layout
+    
+    override func configureUI() {
+        super.configureUI()
+        navigationItem.title = "검색"
+    }
 
     override func setupDelegate() {
         searchView.setupDelegate(self, self)

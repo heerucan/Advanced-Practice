@@ -15,6 +15,11 @@ final class DetailCollectionViewCell: BaseCollectionViewCell {
         $0.contentMode = .scaleAspectFill
     }
     
+    let titleLabel = UILabel().then {
+        $0.font = .boldSystemFont(ofSize: 15)
+        $0.text = "제목"
+    }
+    
     // MARK: - Initializer
     
     override init(frame: CGRect) {
@@ -24,10 +29,17 @@ final class DetailCollectionViewCell: BaseCollectionViewCell {
     // MARK: - Configure UI & Layout
     
     override func configureLayout() {
-        contentView.addSubview(imageView)
+        contentView.addSubviews([imageView,
+                                 titleLabel])
         
         imageView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.equalToSuperview()
+            make.directionalHorizontalEdges.equalToSuperview()
+            make.height.equalTo(imageView.snp.height)
+        }
+        
+        titleLabel.snp.makeConstraints { make in
+            make.leading.bottom.equalToSuperview().inset(15)
         }
     }
 }

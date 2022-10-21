@@ -44,7 +44,8 @@ final class SearchView: BaseView {
     
     // MARK: - Custom Method
     
-    func setupDelegate(_ delegate: UISearchBarDelegate, _ collectionViewDelegate: UICollectionViewDelegate) {
+    func setupDelegate(_ delegate: UISearchBarDelegate,
+                       _ collectionViewDelegate: UICollectionViewDelegate) {
         searchBar.delegate = delegate
         collectionView.delegate = collectionViewDelegate
     }
