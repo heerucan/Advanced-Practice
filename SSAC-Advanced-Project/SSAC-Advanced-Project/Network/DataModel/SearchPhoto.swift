@@ -10,7 +10,6 @@ import Foundation
 // MARK: - SearchPhoto
 
 struct SearchPhoto: Codable, Hashable {
-     
     let total, totalPages: Int
     let results: [SearchResult]
     
@@ -24,7 +23,6 @@ struct SearchPhoto: Codable, Hashable {
 // MARK: - Result
 
 struct SearchResult: Codable, Hashable {
-     
     let id: String
     let urls: Urls
     let likes: Int

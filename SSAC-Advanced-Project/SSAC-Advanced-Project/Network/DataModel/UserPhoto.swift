@@ -6,3 +6,15 @@
 //
 
 import Foundation
+
+// MARK: - UserPhoto
+
+struct UserPhoto: Codable {
+    let id: String
+    let welcomeDescription: String?
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case welcomeDescription = "description"
+    }
+}
