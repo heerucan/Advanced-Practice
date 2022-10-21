@@ -29,7 +29,7 @@ final class SearchViewController: BaseViewController {
     // MARK: - Configure UI & Layout
 
     override func setupDelegate() {
-        searchView.setupDelegate(self)
+        searchView.setupDelegate(self, self)
     }
     
     // MARK: - Bind
@@ -44,11 +44,19 @@ final class SearchViewController: BaseViewController {
     // MARK: - @objc
 }
 
-// MARK: - SearchBarDelegate
+// MARK: - UISearchBarDelegate
 
 extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
+    }
+}
+
+// MARK: - UICollectionViewDelegate
+
+extension SearchViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+         
     }
 }
 
@@ -67,7 +75,9 @@ extension SearchViewController {
     
         dataSource = UICollectionViewDiffableDataSource(collectionView: searchView.collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
             let cell = collectionView.dequeueConfiguredReusableCell(
-                using: cellRegistration, for: indexPath, item: itemIdentifier)
+                using: cellRegistration,
+                for: indexPath,
+                item: itemIdentifier)
             return cell
         })
         

@@ -15,8 +15,7 @@ final class SearchView: BaseView {
         $0.placeholder = "검색하고 싶은 사진을 영어로 입력해주세요"
     }
     
-    lazy var collectionView = UICollectionView(
-        frame: .zero, collectionViewLayout: createLayout())
+    lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
     
     // MARK: - Initializer
     
@@ -45,8 +44,9 @@ final class SearchView: BaseView {
     
     // MARK: - Custom Method
     
-    func setupDelegate(_ delegate: UISearchBarDelegate) {
+    func setupDelegate(_ delegate: UISearchBarDelegate, _ collectionViewDelegate: UICollectionViewDelegate) {
         searchBar.delegate = delegate
+        collectionView.delegate = collectionViewDelegate
     }
 }
 
@@ -54,24 +54,25 @@ final class SearchView: BaseView {
 
 extension SearchView {
     private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
-        return UICollectionViewCompositionalLayout { (sectionIndex, NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection?  in
-            
+        return UICollectionViewCompositionalLayout {
+            (sectionIndex, NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection?  in
+            let spacing = 2.0
+
             let itemSize = NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1/2),
+                widthDimension: .fractionalWidth(1/3),
                 heightDimension: .fractionalHeight(1))
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
             
             let groupSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1),
-                heightDimension: .fractionalWidth(1/2))
+                heightDimension: .fractionalWidth(1/3))
             
             let group = NSCollectionLayoutGroup.horizontal(
                 layoutSize: groupSize,
-                subitem: item, count: 2)
-            group.interItemSpacing = .fixed(5)
+                subitem: item, count: 3)
+            group.interItemSpacing = .fixed(spacing)
             
             let section = NSCollectionLayoutSection(group: group)
-            let spacing = 5.0
             section.interGroupSpacing = spacing
             section.contentInsets = NSDirectionalEdgeInsets(
                 top: spacing, leading: spacing,

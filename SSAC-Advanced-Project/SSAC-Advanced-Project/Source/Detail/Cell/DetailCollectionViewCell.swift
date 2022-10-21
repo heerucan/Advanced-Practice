@@ -1,13 +1,13 @@
 //
-//  SearchCollectionViewCell.swift
+//  DetailCollectionViewCell.swift
 //  SSAC-Advanced-Project
 //
-//  Created by heerucan on 2022/10/20.
+//  Created by heerucan on 2022/10/21.
 //
 
 import UIKit
 
-final class SearchCollectionViewCell: BaseCollectionViewCell {
+final class DetailCollectionViewCell: BaseCollectionViewCell {
     
     // MARK: - Property
     
@@ -31,3 +31,4 @@ final class SearchCollectionViewCell: BaseCollectionViewCell {
         }
     }
 }
+
