@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class BaseCollectionViewCell: UICollectionViewCell {
+class BaseCollectionViewCell: UICollectionViewCell, BaseMethodProtocol {
     
     // MARK: - Initializer
     

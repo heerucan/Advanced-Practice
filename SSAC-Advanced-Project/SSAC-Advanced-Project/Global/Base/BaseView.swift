@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BaseView: UIView {
+class BaseView: UIView, BaseMethodProtocol {
     
     // MARK: - Initializer
     
