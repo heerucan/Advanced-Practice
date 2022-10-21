@@ -16,13 +16,13 @@ import Alamofire
     
     // MARK: - BaseURL
     
-    var baseURL: URL {
+    private var baseURL: URL {
         return URL(string: APIKey.baseURL)!
     }
     
     // MARK: - Method
     
-    var method: HTTPMethod {
+    private var method: HTTPMethod {
         switch self {
         case .getSearchUser, .getUserProfile, .getUserPhotos: return .get
         }
@@ -30,7 +30,7 @@ import Alamofire
     
     // MARK: - Path
     
-    var path: String {
+    private var path: String {
         switch self {
         case .getSearchUser(let query):
             return "/search/users?query=\(query)"
@@ -43,7 +43,7 @@ import Alamofire
     
     // MARK: - asURLRequest
     
-    func asURLRequest() throws -> URLRequest {
+    private func asURLRequest() throws -> URLRequest {
         let url = URL(string: baseURL.appendingPathComponent(path).absoluteString.removingPercentEncoding!)
         var request = URLRequest(url: url!)
         request.method = method

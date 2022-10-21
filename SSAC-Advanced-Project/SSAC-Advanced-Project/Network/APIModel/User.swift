@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - User
 
-struct User: Codable {
+struct User: Decodable {
     let id: String
     let username: String
     let profileImage: ProfileImage
@@ -25,6 +25,6 @@ struct User: Codable {
 
 // MARK: - ProfileImage
 
-struct ProfileImage: Codable {
+struct ProfileImage: Decodable {
     let small, medium, large: String
 }

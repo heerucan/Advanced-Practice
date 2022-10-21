@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - UserPhoto
 
-struct UserPhoto: Codable {
+struct UserPhoto: Decodable {
     let id: String
     let urls: Urls
     let welcomeDescription: String?
@@ -22,7 +22,7 @@ struct UserPhoto: Codable {
 
 // MARK: - Urls
 
-struct Urls: Codable {
+struct Urls: Decodable {
     let raw, full, regular, small: String
     let thumb, smallS3: String
 

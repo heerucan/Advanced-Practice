@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - SearchUser
 
-struct SearchUser: Codable {
+struct SearchUser: Decodable {
     let total, totalPages: Int
     let results: [Result]
 
@@ -22,18 +22,12 @@ struct SearchUser: Codable {
 
 // MARK: - Result
 
-struct Result: Codable {
+struct Result: Decodable, Hashable {
     let id: String
     let username: String
 
     enum CodingKeys: String, CodingKey {
         case id
         case username
-    }
-    
-    init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        id = (try? values.decode(String.self, forKey: .id)) ?? ""
-        username = (try? values.decode(String.self, forKey: .username)) ?? ""
     }
 }
