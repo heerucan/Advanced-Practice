@@ -7,7 +7,7 @@
 
 import Foundation
 
-class CObservable<T> {
+final class CObservable<T> {
     
     private var listener: ((T) -> Void)?
     

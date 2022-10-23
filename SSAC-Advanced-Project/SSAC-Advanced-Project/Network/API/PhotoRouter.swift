@@ -43,7 +43,7 @@ import Alamofire
     
     // MARK: - asURLRequest
     
-    private func asURLRequest() throws -> URLRequest {
+    func asURLRequest() throws -> URLRequest {
         let url = URL(string: baseURL.appendingPathComponent(path).absoluteString.removingPercentEncoding!)
         var request = URLRequest(url: url!)
         request.method = method

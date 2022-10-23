@@ -19,7 +19,6 @@ class BaseViewController: UIViewController, BaseMethodProtocol {
         configureUI()
         configureLayout()
         setupDelegate()
-        bindData()
     }
 
     // MARK: - Configure UI & Layout
@@ -30,8 +29,4 @@ class BaseViewController: UIViewController, BaseMethodProtocol {
     
     func configureLayout() { }
     func setupDelegate() { }
-    
-    // MARK: - Bind Data
-    
-    func bindData() { }
 }
