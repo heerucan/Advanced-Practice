@@ -13,9 +13,12 @@ final class DetailViewController: BaseViewController {
     
     static let sectionHeaderElementKind = "section-header-element-kind"
     
-    private let detailView = DetailView()
+    var usernameId = ""
     
-    private var dataSource: UICollectionViewDiffableDataSource<Int, String>!
+    private let detailView = DetailView()
+    private let detailViewModel = DetailViewModel()
+    
+    private var dataSource: UICollectionViewDiffableDataSource<Int, Photo>!
     
     // MARK: - LifeCycle
     
@@ -26,6 +29,7 @@ final class DetailViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureDataSource()
+        bindData()
     }
     
     // MARK: - Configure UI & Layout
@@ -33,39 +37,27 @@ final class DetailViewController: BaseViewController {
     override func configureUI() {
         super.configureUI()
         navigationItem.title = "상세"
-        PhotoAPIManager.shared.getSearchUser(query: "apple") { (data, status, error) in
-            print("getSearchUser", data, status, error)
-        }
-        
-        PhotoAPIManager.shared.getUserPhoto(username: "apple") { (data, status, error) in
-            print("getUserPhoto", data, status, error)
-        }
-        
-        PhotoAPIManager.shared.getUser(username: "apple") { (data, status, error) in
-            print("user", data, status, error)
-        } 
-    }
-    
-    override func setupDelegate() {
-        detailView.setupCollectionView(self)
     }
 
     // MARK: - Bind Data
     
-    override func bindData() {
-        print(#function)
+    private func bindData() {
+        detailViewModel.requestUser(username: usernameId)
+        detailViewModel.requestUserPhoto(username: usernameId)
+
+        detailViewModel.userList.bind { user in
+            DispatchQueue.main.async {
+                self.detailView.setData(data: user)
+            }
+        }
+        
+        detailViewModel.photoList.bind { photo in
+            var snapshot = NSDiffableDataSourceSnapshot<Int, Photo>()
+            snapshot.appendSections([0])
+            snapshot.appendItems(photo)
+            self.dataSource.apply(snapshot)
+        }
     }
-    
-    // MARK: - Custom Method
-    
-    
-    // MARK: - @objc
-}
-
-// MARK: - UICollectionViewDelegate
-
-extension DetailViewController: UICollectionViewDelegate {
-    
 }
 
 // MARK: - DiffableDataSource
@@ -73,11 +65,12 @@ extension DetailViewController: UICollectionViewDelegate {
 extension DetailViewController {
     private func configureDataSource() {
         
-        let cellRegistration = UICollectionView.CellRegistration<DetailCollectionViewCell, String> { cell, indexPath, itemIdentifier in
-            cell.backgroundColor = .lightGray
+        let cellRegistration = UICollectionView.CellRegistration<DetailCollectionViewCell, Photo> { cell, indexPath, itemIdentifier in
+            cell.setData(data: itemIdentifier)
         }
         
         let headerRegistration = UICollectionView.SupplementaryRegistration<DetailSupplementaryView>(elementKind: DetailViewController.sectionHeaderElementKind) { supplementaryView, elementKind, indexPath in
+            supplementaryView.label.text = self.usernameId + "의 작업물"
         }
        
         dataSource = UICollectionViewDiffableDataSource(collectionView: detailView.collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
@@ -90,10 +83,5 @@ extension DetailViewController {
             return self.detailView.collectionView.dequeueConfiguredReusableSupplementary(
                 using: headerRegistration, for: index)
         }
-        
-        var snapshot = NSDiffableDataSourceSnapshot<Int, String>()
-        snapshot.appendSections([0])
-        snapshot.appendItems(["dk", "D", "A", "GAS"], toSection: 0)
-        dataSource.apply(snapshot)
     }
 }

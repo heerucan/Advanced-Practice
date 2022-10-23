@@ -13,11 +13,8 @@ final class DetailCollectionViewCell: BaseCollectionViewCell {
     
     let imageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
-    }
-    
-    let titleLabel = UILabel().then {
-        $0.font = .boldSystemFont(ofSize: 15)
-        $0.text = "제목"
+        $0.clipsToBounds = true
+        $0.backgroundColor = .systemGray6
     }
     
     // MARK: - Initializer
@@ -29,18 +26,23 @@ final class DetailCollectionViewCell: BaseCollectionViewCell {
     // MARK: - Configure UI & Layout
     
     override func configureLayout() {
-        contentView.addSubviews([imageView,
-                                 titleLabel])
+        contentView.addSubview(imageView)
         
         imageView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.directionalHorizontalEdges.equalToSuperview()
-            make.height.equalTo(imageView.snp.height)
+            make.edges.equalToSuperview()
         }
-        
-        titleLabel.snp.makeConstraints { make in
-            make.leading.bottom.equalToSuperview().inset(15)
+    }
+    
+    // MARK: - Set Data
+    
+    func setData(data: Photo) {
+        DispatchQueue.global().async {
+            guard let url = URL(string: data.urls.regular) else { return }
+            guard let photoData = try? Data(contentsOf: url) else { return }
+            
+            DispatchQueue.main.async {
+                self.imageView.image = UIImage(data: photoData)
+            }
         }
     }
 }
-

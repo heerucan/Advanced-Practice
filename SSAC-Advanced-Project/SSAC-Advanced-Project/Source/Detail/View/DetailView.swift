@@ -15,25 +15,26 @@ final class DetailView: BaseView {
         $0.contentMode = .scaleAspectFill
         $0.backgroundColor = .red
         $0.layer.cornerRadius = 40
+        $0.clipsToBounds = true
     }
     
     let usernameLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 16)
-        $0.text = "게시자이름"
     }
     
     let subLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 16)
         $0.textColor = .systemPink
-        $0.text = "총 게시글 20개 | 좋아요 수 342"
     }
     
-    lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
+    lazy var collectionView = UICollectionView(frame: .zero,
+                                               collectionViewLayout: createLayout())
     
     // MARK: - Initializer
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setupCollectionView()
     }
     
     // MARK: - Configure UI & Layout
@@ -61,17 +62,26 @@ final class DetailView: BaseView {
         }
         
         collectionView.snp.makeConstraints { make in
-            make.top.equalTo(subLabel.snp.bottom).offset(80)
+            make.top.equalTo(subLabel.snp.bottom).offset(50)
             make.directionalHorizontalEdges.equalToSuperview()
             make.bottom.equalTo(self.safeAreaLayoutGuide)
         }
     }
     
-    func setupCollectionView(_ delegate: UICollectionViewDelegate) {
+    func setupCollectionView() {
         collectionView.register(DetailSupplementaryView.self,
                                 forSupplementaryViewOfKind: DetailViewController.sectionHeaderElementKind,
                                 withReuseIdentifier: DetailSupplementaryView.reuseIdentifier)
-        collectionView.delegate = delegate
+    }
+    
+    // MARK: - Set Data
+    
+    func setData(data: User) {
+        guard let url = URL(string: data.profileImage.large) else { return }
+        guard let userData = try? Data(contentsOf: url) else { return }
+        profileImageView.image = UIImage(data: userData)
+        usernameLabel.text = data.username
+        subLabel.text = "좋아요 수 \(data.totalPhotos)"
     }
 }
 
@@ -92,8 +102,8 @@ extension DetailView {
             
             let groupSize = NSCollectionLayoutSize(
                 widthDimension: .absolute(self.frame.width-30),
-                heightDimension: .fractionalHeight(3/4))
-            let group = NSCollectionLayoutGroup.vertical(
+                heightDimension: .fractionalHeight(9/10))
+            let group = NSCollectionLayoutGroup.horizontal(
                 layoutSize: groupSize,
                 subitem: item,
                 count: 1)
