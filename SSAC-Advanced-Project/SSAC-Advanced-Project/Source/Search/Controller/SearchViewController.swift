@@ -57,13 +57,17 @@ final class SearchViewController: BaseViewController {
 extension SearchViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         guard let query = searchBar.text else { return }
-        searchViewModel.requestSearchUser(query: query)
+        searchViewModel.requestSearchUser(query: query, page: 50)
     }
 }
 
 // MARK: - UICollectionViewDelegate
 
 extension SearchViewController: UICollectionViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        searchView.searchBar.searchTextField.resignFirstResponder()
+    }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: false)
         guard let item = dataSource.itemIdentifier(for: indexPath) else { return }

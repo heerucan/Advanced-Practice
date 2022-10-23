@@ -17,8 +17,8 @@ final class PhotoAPIManager {
   
     // MARK: - GET : searchUser
     
-    func getSearchUser(query: String, completion: @escaping completion<SearchUser>) {
-        AF.request(PhotoRouter.getSearchUser(query: query))
+    func getSearchUser(query: String, page: Int, completion: @escaping completion<SearchUser>) {
+        AF.request(PhotoRouter.getSearchUser(query: query, page: page))
             .validate(statusCode: 200..<500).responseDecodable(of: SearchUser.self) { response in
             let statusCode = response.response?.statusCode
             switch response.result {

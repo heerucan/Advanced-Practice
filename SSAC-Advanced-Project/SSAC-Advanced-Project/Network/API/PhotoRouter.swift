@@ -10,7 +10,7 @@ import Foundation
 import Alamofire
 
 @frozen enum PhotoRouter: URLRequestConvertible {
-    case getSearchUser(query: String) // 유저 검색하기
+    case getSearchUser(query: String, page: Int) // 유저 검색하기
     case getUserProfile(username: String) // 유저 정보 가져오기
     case getUserPhotos(username: String) // 유저 이미지 가져오기
     
@@ -32,8 +32,8 @@ import Alamofire
     
     private var path: String {
         switch self {
-        case .getSearchUser(let query):
-            return "/search/users?query=\(query)"
+        case .getSearchUser(let query, let page):
+            return "/search/users?query=\(query)&per_page=\(page)"
         case .getUserProfile(let username):
             return "/users/\(username)"
         case .getUserPhotos(let username):
