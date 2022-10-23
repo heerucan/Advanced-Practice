@@ -65,7 +65,11 @@ extension SearchViewController: UISearchBarDelegate {
 
 extension SearchViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-         
+        collectionView.deselectItem(at: indexPath, animated: false)
+        guard let item = dataSource.itemIdentifier(for: indexPath) else { return }
+        let viewController = DetailViewController()
+        viewController.usernameId = item.username
+        navigationController?.pushViewController(viewController, animated: true)
     }
 }
 
