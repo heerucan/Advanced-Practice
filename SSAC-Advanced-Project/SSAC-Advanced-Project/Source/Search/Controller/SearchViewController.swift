@@ -12,8 +12,9 @@ final class SearchViewController: BaseViewController {
     // MARK: - Property
     
     private let searchView = SearchView()
-    
-    private var dataSource: UICollectionViewDiffableDataSource<Int, String>!
+    private let searchViewModel = SearchViewModel()
+        
+    private var dataSource: UICollectionViewDiffableDataSource<Int, Result>!
     
     // MARK: - LifeCycle
     
@@ -24,6 +25,7 @@ final class SearchViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureDataSource()
+        bindData()
     }
     
     // MARK: - Configure UI & Layout
@@ -39,21 +41,23 @@ final class SearchViewController: BaseViewController {
     
     // MARK: - Bind
     
-    override func bindData() {
+    private func bindData() {
         print(#function)
+        searchViewModel.userList.bind { user in
+            var snapshot = NSDiffableDataSourceSnapshot<Int, Result>()
+            snapshot.appendSections([0])
+            snapshot.appendItems(user.results)
+            self.dataSource.apply(snapshot, animatingDifferences: true)
+        }
     }
-    
-    // MARK: - Custom Method
-    
-    
-    // MARK: - @objc
 }
 
 // MARK: - UISearchBarDelegate
 
 extension SearchViewController: UISearchBarDelegate {
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        guard let query = searchBar.text else { return }
+        searchViewModel.requestSearchUser(query: query)
     }
 }
 
@@ -69,26 +73,21 @@ extension SearchViewController: UICollectionViewDelegate {
 
 extension SearchViewController {
     func configureDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<SearchCollectionViewCell, String> { cell, indexPath, itemIdentifier in
-            // String > URL > Data > Image 방식
-            
-//            cell.imageView.image.
-            cell.backgroundColor = .red
-            cell.layer.borderColor = UIColor.black.cgColor
-            cell.layer.borderWidth = 2
+        let cellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, Result> { cell, indexPath, itemIdentifier in
+            var content = UIListContentConfiguration.valueCell()
+            var back = UIBackgroundConfiguration.listPlainCell()
+            content.text = itemIdentifier.username
+            content.textProperties.alignment = .center
+            back.strokeWidth = 1
+            back.strokeColor = .black
+            cell.backgroundConfiguration = back
+            cell.contentConfiguration = content
         }
     
         dataSource = UICollectionViewDiffableDataSource(collectionView: searchView.collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
             let cell = collectionView.dequeueConfiguredReusableCell(
-                using: cellRegistration,
-                for: indexPath,
-                item: itemIdentifier)
+                using: cellRegistration, for: indexPath, item: itemIdentifier)
             return cell
         })
-        
-        var snapshot = NSDiffableDataSourceSnapshot<Int, String>()
-        snapshot.appendSections([0])
-        snapshot.appendItems(["안녕", "안d녕", "안ss녕", "안a녕", "안g녕", "안s녕", "안gh녕"])
-        dataSource.apply(snapshot, animatingDifferences: true)
     }
 }

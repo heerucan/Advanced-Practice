@@ -26,8 +26,8 @@ final class SearchView: BaseView {
     // MARK: - Configure UI
     
     override func configureLayout() {
-        addSubview(searchBar)
-        addSubview(collectionView)
+        addSubviews([searchBar,
+                    collectionView])
         
         searchBar.snp.makeConstraints { make in
             make.top.equalTo(self.safeAreaLayoutGuide.snp.top)
@@ -57,7 +57,7 @@ extension SearchView {
     private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout {
             (sectionIndex, NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection?  in
-            let spacing = 2.0
+            let spacing = 3.0
 
             let itemSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1/3),
@@ -66,7 +66,7 @@ extension SearchView {
             
             let groupSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1),
-                heightDimension: .fractionalWidth(1/3))
+                heightDimension: .fractionalWidth(1/6))
             
             let group = NSCollectionLayoutGroup.horizontal(
                 layoutSize: groupSize,
