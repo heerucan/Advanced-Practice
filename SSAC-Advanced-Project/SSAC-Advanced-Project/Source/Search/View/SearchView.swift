@@ -25,6 +25,11 @@ final class SearchView: BaseView {
 
     // MARK: - Configure UI
     
+    override func configureUI() {
+        collectionView.keyboardDismissMode = .onDrag
+        
+    }
+    
     override func configureLayout() {
         addSubviews([searchBar,
                     collectionView])
@@ -40,14 +45,6 @@ final class SearchView: BaseView {
             make.directionalHorizontalEdges.equalToSuperview()
             make.bottom.equalTo(self.safeAreaLayoutGuide)
         }
-    }
-    
-    // MARK: - Custom Method
-    
-    func setupDelegate(_ delegate: UISearchBarDelegate,
-                       _ collectionViewDelegate: UICollectionViewDelegate) {
-        searchBar.delegate = delegate
-        collectionView.delegate = collectionViewDelegate
     }
 }
 

@@ -7,13 +7,19 @@
 
 import UIKit
 
+import RxSwift
+import RxCocoa
+
 final class SearchViewController: BaseViewController {
+    
+    // MARK: - DisposeBag
+    
+    private let disposeBag = DisposeBag()
     
     // MARK: - Property
     
     private let searchView = SearchView()
     private let searchViewModel = SearchViewModel()
-        
     private var dataSource: UICollectionViewDiffableDataSource<Int, Result>!
     
     // MARK: - LifeCycle
@@ -34,42 +40,55 @@ final class SearchViewController: BaseViewController {
         super.configureUI()
         navigationItem.title = "검색"
     }
-
-    override func setupDelegate() {
-        searchView.setupDelegate(self, self)
-    }
     
     // MARK: - Bind
     
     private func bindData() {
-        print(#function)
-        searchViewModel.userList.bind { user in
+        
+        searchViewModel.userList
+            .withUnretained(self)
+            .bind { (vc, user) in
             var snapshot = NSDiffableDataSourceSnapshot<Int, Result>()
             snapshot.appendSections([0])
             snapshot.appendItems(user.results)
-            self.dataSource.apply(snapshot, animatingDifferences: true)
+            vc.dataSource.apply(snapshot, animatingDifferences: true)
         }
-    }
-}
-
-// MARK: - UISearchBarDelegate
-
-extension SearchViewController: UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        guard let query = searchBar.text else { return }
-        searchViewModel.requestSearchUser(query: query, page: 50)
-    }
-}
-
-// MARK: - UICollectionViewDelegate
-
-extension SearchViewController: UICollectionViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        searchView.searchBar.searchTextField.resignFirstResponder()
+        .disposed(by: disposeBag)
+        
+        searchView.searchBar.searchTextField.rx.text
+            .orEmpty
+            .debounce(.seconds(1), scheduler: MainScheduler.instance)
+            .distinctUntilChanged()
+            .withUnretained(self)
+            .subscribe { (vc, value) in
+                vc.searchViewModel.requestSearchUser(query: value, page: 50)
+            } onError: { error in
+                print("error")
+            } onCompleted: {
+                print("completed")
+            } onDisposed: {
+                print("disposed")
+            }
+            .disposed(by: disposeBag)
+    
+        searchView.collectionView.rx.itemSelected
+            .withUnretained(self)
+            .subscribe(onNext: { (vc, item) in
+                vc.pushDetailView(item)
+                vc.searchView.collectionView.deselectItem(at: item, animated: true)
+            }, onError: { error in
+                print(error)
+            }, onCompleted: {
+                print("onCompleted")
+            }, onDisposed: {
+                print("onDisposed")
+            })
+            .disposed(by: disposeBag)
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        collectionView.deselectItem(at: indexPath, animated: false)
+    // MARK: - Custom Method
+    
+    private func pushDetailView(_ indexPath: IndexPath) {
         guard let item = dataSource.itemIdentifier(for: indexPath) else { return }
         let viewController = DetailViewController()
         viewController.usernameId = item.username
