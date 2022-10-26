@@ -44,7 +44,8 @@ import Alamofire
     // MARK: - asURLRequest
     
     func asURLRequest() throws -> URLRequest {
-        let url = URL(string: baseURL.appendingPathComponent(path).absoluteString.removingPercentEncoding!)
+        let urlString = baseURL.appendingPathComponent(path).absoluteString.removingPercentEncoding!
+        let url = URL(string: urlString.replacingOccurrences(of: " ", with: ""))
         var request = URLRequest(url: url!)
         request.method = method
         request.setValue(APIKey.authorization, forHTTPHeaderField: "Authorization")
