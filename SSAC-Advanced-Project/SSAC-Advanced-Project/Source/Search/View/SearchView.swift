@@ -27,7 +27,6 @@ final class SearchView: BaseView {
     
     override func configureUI() {
         collectionView.keyboardDismissMode = .onDrag
-        
     }
     
     override func configureLayout() {

@@ -6,7 +6,8 @@
 //
 
 import Foundation
-import SwiftUI
+
+import RxSwift
 
 final class DetailViewModel {
     
@@ -16,25 +17,25 @@ final class DetailViewModel {
     
     // MARK: - Get : User
 
-    lazy var userList: CObservable<User> = CObservable(user)
+    let userList = PublishSubject<User>()
     
     func requestUser(username: String) {
         PhotoAPIManager.shared.getUser(username: username) { [weak self] (user, status, error) in
             guard let user = user,
                   let self = self else { return }
-            self.userList.value = user
+            self.userList.onNext(user)
         }
     }
     
     // MARK: - Get : Photo
     
-    lazy var photoList: CObservable<[Photo]> = CObservable(user.photos)
+    let photoList = PublishSubject<[Photo]>()
     
     func requestUserPhoto(username: String) {
         PhotoAPIManager.shared.getUserPhoto(username: username) { [weak self] (photo, status, error) in
             guard let photo = photo,
                   let self = self else { return }
-            self.photoList.value = photo
+            self.photoList.onNext(photo)
         }
     }
 }

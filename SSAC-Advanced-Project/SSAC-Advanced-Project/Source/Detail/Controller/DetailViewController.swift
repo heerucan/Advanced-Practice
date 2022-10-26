@@ -7,7 +7,14 @@
 
 import UIKit
 
+import RxSwift
+import RxCocoa
+
 final class DetailViewController: BaseViewController {
+    
+    // MARK: - DisposeBag
+    
+    private let disposeBag = DisposeBag()
     
     // MARK: - Property
     
@@ -16,8 +23,8 @@ final class DetailViewController: BaseViewController {
     var usernameId = ""
     
     private let detailView = DetailView()
+    private let detailSupplementaryView = DetailSupplementaryView()
     private let detailViewModel = DetailViewModel()
-    
     private var dataSource: UICollectionViewDiffableDataSource<Int, Photo>!
     
     // MARK: - LifeCycle
@@ -42,21 +49,29 @@ final class DetailViewController: BaseViewController {
     // MARK: - Bind Data
     
     private func bindData() {
-        detailViewModel.requestUser(username: usernameId)
-        detailViewModel.requestUserPhoto(username: usernameId)
-
-        detailViewModel.userList.bind { user in
-            DispatchQueue.main.async {
-                self.detailView.setData(data: user)
-            }
-        }
         
-        detailViewModel.photoList.bind { photo in
+        // 이벤트를 전달하는 객체 : 옵저버블 - viewmodel의 userList
+        // 이벤트를 전달받는 객체 : 옵저버 - view의 userNameLabel, subLabel 등등
+        // 그리고 bind는 항상 Main에서 작동하니까 Main 큐 처리를 해주지 않아도 될 듯..?
+        detailViewModel.userList
+            .withUnretained(self)
+            .bind { (vc, data) in
+                vc.detailView.setData(data: data)
+            }
+            .disposed(by: disposeBag)
+
+        detailViewModel.photoList
+            .withUnretained(self)
+            .bind { (vc, photo) in
             var snapshot = NSDiffableDataSourceSnapshot<Int, Photo>()
             snapshot.appendSections([0])
             snapshot.appendItems(photo)
-            self.dataSource.apply(snapshot)
+            vc.dataSource.apply(snapshot)
         }
+        .disposed(by: disposeBag)
+        
+        detailViewModel.requestUser(username: usernameId)
+        detailViewModel.requestUserPhoto(username: usernameId)
     }
 }
 

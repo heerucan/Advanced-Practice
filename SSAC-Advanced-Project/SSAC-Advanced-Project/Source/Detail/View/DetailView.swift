@@ -27,8 +27,7 @@ final class DetailView: BaseView {
         $0.textColor = .systemPink
     }
     
-    lazy var collectionView = UICollectionView(frame: .zero,
-                                               collectionViewLayout: createLayout())
+    lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
     
     // MARK: - Initializer
     
