@@ -62,12 +62,6 @@ final class SearchViewController: BaseViewController {
             .withUnretained(self)
             .subscribe { (vc, value) in
                 vc.searchViewModel.requestSearchUser(query: value, page: 50)
-            } onError: { error in
-                print("error")
-            } onCompleted: {
-                print("completed")
-            } onDisposed: {
-                print("disposed")
             }
             .disposed(by: disposeBag)
     
@@ -76,18 +70,12 @@ final class SearchViewController: BaseViewController {
             .subscribe(onNext: { (vc, item) in
                 vc.pushDetailView(item)
                 vc.searchView.collectionView.deselectItem(at: item, animated: true)
-            }, onError: { error in
-                print(error)
-            }, onCompleted: {
-                print("onCompleted")
-            }, onDisposed: {
-                print("onDisposed")
             })
             .disposed(by: disposeBag)
     }
     
     // MARK: - Custom Method
-    
+ 
     private func pushDetailView(_ indexPath: IndexPath) {
         guard let item = dataSource.itemIdentifier(for: indexPath) else { return }
         let viewController = DetailViewController()
