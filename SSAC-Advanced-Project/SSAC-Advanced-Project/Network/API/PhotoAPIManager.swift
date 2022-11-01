@@ -13,11 +13,11 @@ final class PhotoAPIManager {
     static let shared = PhotoAPIManager()
     private init() { }
     
-    typealias completion<T> = ((T?, Int?, Error?) -> Void)
+    typealias Completion<T> = ((T?, Int?, Error?) -> Void)
   
     // MARK: - GET : searchUser
     
-    func getSearchUser(query: String, page: Int, completion: @escaping completion<SearchUser>) {
+    func getSearchUser(query: String, page: Int, completion: @escaping Completion<SearchUser>) {
         AF.request(PhotoRouter.getSearchUser(query: query, page: page))
             .validate(statusCode: 200..<500).responseDecodable(of: SearchUser.self) { response in
             let statusCode = response.response?.statusCode
@@ -33,7 +33,7 @@ final class PhotoAPIManager {
     
     // MARK: - GET : user
     
-    func getUser(username: String, completion: @escaping completion<User>) {
+    func getUser(username: String, completion: @escaping Completion<User>) {
         AF.request(PhotoRouter.getUserProfile(username: username))
             .validate(statusCode: 200..<500).responseDecodable(of: User.self) { response in
             let statusCode = response.response?.statusCode
@@ -49,7 +49,7 @@ final class PhotoAPIManager {
     
     // MARK: - GET : userPhoto
     
-    func getUserPhoto(username: String, completion: @escaping completion<[Photo]>) {
+    func getUserPhoto(username: String, completion: @escaping Completion<[Photo]>) {
         AF.request(PhotoRouter.getUserPhotos(username: username))
             .validate(statusCode: 200..<500).responseDecodable(of: [Photo].self) { response in
             let statusCode = response.response?.statusCode
