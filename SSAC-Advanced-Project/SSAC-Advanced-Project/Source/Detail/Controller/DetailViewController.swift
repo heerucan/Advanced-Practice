@@ -36,7 +36,7 @@ final class DetailViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureDataSource()
-        bindData()
+        bindViewModel()
     }
     
     // MARK: - Configure UI & Layout
@@ -48,19 +48,23 @@ final class DetailViewController: BaseViewController {
 
     // MARK: - Bind Data
     
-    private func bindData() {
+    private func bindViewModel() {
         
         // 이벤트를 전달하는 객체 : 옵저버블 - viewmodel의 userList
         // 이벤트를 전달받는 객체 : 옵저버 - view의 userNameLabel, subLabel 등등
         // 그리고 bind는 항상 Main에서 작동하니까 Main 큐 처리를 해주지 않아도 될 듯..?
-        detailViewModel.userList
+        
+        let input = DetailViewModel.Input()
+        let output = detailViewModel.transform(input: input)
+        
+        output.userList // Output VM -> VC
             .withUnretained(self)
             .bind { (vc, data) in
                 vc.detailView.setData(data: data)
             }
             .disposed(by: disposeBag)
 
-        detailViewModel.photoList
+        output.photoList // Output VM -> VC
             .withUnretained(self)
             .bind { (vc, photo) in
             var snapshot = NSDiffableDataSourceSnapshot<Int, Photo>()

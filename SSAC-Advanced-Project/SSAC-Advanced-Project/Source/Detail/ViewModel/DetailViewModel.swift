@@ -9,11 +9,25 @@ import Foundation
 
 import RxSwift
 
-final class DetailViewModel {
-    
-    // MARK: - Get : User
+final class DetailViewModel: ViewModelType {
 
     let userList = PublishSubject<User>()
+    let photoList = PublishSubject<[Photo]>()
+
+    struct Input {
+        
+    }
+    
+    struct Output {
+        let userList: PublishSubject<User>
+        let photoList: PublishSubject<[Photo]>
+    }
+    
+    func transform(input: Input) -> Output {
+        let userList = userList
+        let photoList = photoList
+        return Output(userList: userList, photoList: photoList)
+    }
     
     func requestUser(username: String) {
         PhotoAPIManager.shared.getUser(username: username) { [weak self] (user, status, error) in
@@ -22,10 +36,6 @@ final class DetailViewModel {
             self.userList.onNext(user)
         }
     }
-    
-    // MARK: - Get : Photo
-    
-    let photoList = PublishSubject<[Photo]>()
     
     func requestUserPhoto(username: String) {
         PhotoAPIManager.shared.getUserPhoto(username: username) { [weak self] (photo, status, error) in

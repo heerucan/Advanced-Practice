@@ -31,7 +31,7 @@ final class SearchViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureDataSource()
-        bindData()
+        bindViewModel()
     }
     
     // MARK: - Configure UI & Layout
@@ -43,31 +43,36 @@ final class SearchViewController: BaseViewController {
     
     // MARK: - Bind
     
-    private func bindData() {
+    private func bindViewModel() {
         
-        searchViewModel.userList
+        let input = SearchViewModel.Input(searchText: searchView.searchBar.rx.text)
+        let output = searchViewModel.transform(input: input)
+        
+        searchViewModel.userList // Output VM -> VC
             .withUnretained(self)
             .bind { (vc, user) in
-            var snapshot = NSDiffableDataSourceSnapshot<Int, Result>()
-            snapshot.appendSections([0])
-            snapshot.appendItems(user.results)
-            vc.dataSource.apply(snapshot, animatingDifferences: true)
-        }
-        .disposed(by: disposeBag)
-        
-        searchView.searchBar.searchTextField.rx.text
-            .orEmpty
-            .debounce(.seconds(1), scheduler: MainScheduler.instance)
-            .distinctUntilChanged()
-            .withUnretained(self)
-            .subscribe { (vc, value) in
-                vc.searchViewModel.requestSearchUser(query: value, page: 50)
+                var snapshot = NSDiffableDataSourceSnapshot<Int, Result>()
+                snapshot.appendSections([0])
+                snapshot.appendItems(user.results)
+                vc.dataSource.apply(snapshot, animatingDifferences: true)
             }
             .disposed(by: disposeBag)
-    
-        searchView.collectionView.rx.itemSelected
+        
+//        searchView.searchBar.searchTextField.rx.text // Input VC -> VM
+//            .orEmpty
+//            .debounce(.seconds(1), scheduler: MainScheduler.instance)
+//            .distinctUntilChanged() // 요놈들을 비즈니스 로직으로 생각했음
+        
+        output.searchText
             .withUnretained(self)
-            .subscribe(onNext: { (vc, item) in
+            .bind(onNext: { (vc, value) in
+                vc.searchViewModel.requestSearchUser(query: value, page: 50)
+            })
+            .disposed(by: disposeBag)
+        
+        searchView.collectionView.rx.itemSelected // 이것은 코디네이터.. 그렇군..
+            .withUnretained(self)
+            .bind(onNext: { (vc, item) in
                 vc.pushDetailView(item)
                 vc.searchView.collectionView.deselectItem(at: item, animated: true)
             })
@@ -75,7 +80,7 @@ final class SearchViewController: BaseViewController {
     }
     
     // MARK: - Custom Method
- 
+    
     private func pushDetailView(_ indexPath: IndexPath) {
         guard let item = dataSource.itemIdentifier(for: indexPath) else { return }
         let viewController = DetailViewController()
@@ -98,7 +103,7 @@ extension SearchViewController {
             cell.backgroundConfiguration = back
             cell.contentConfiguration = content
         }
-    
+        
         dataSource = UICollectionViewDiffableDataSource(collectionView: searchView.collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
             let cell = collectionView.dequeueConfiguredReusableCell(
                 using: cellRegistration, for: indexPath, item: itemIdentifier)

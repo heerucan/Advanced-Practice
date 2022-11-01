@@ -56,11 +56,9 @@ final class PhotoAPIManager {
             switch response.result {
             case .success(let value):
                 completion(value, statusCode, nil)
-                print(value)
 
             case .failure(let error):
                 completion(nil, statusCode, error)
-                print(error)
             }
         }
     }

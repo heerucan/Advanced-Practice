@@ -13,8 +13,10 @@ final class DetailView: BaseView {
     
     let profileImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
-        $0.backgroundColor = .red
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = UIColor.systemGray5.cgColor
         $0.layer.cornerRadius = 40
+        $0.backgroundColor = .systemGray6
         $0.clipsToBounds = true
     }
     
@@ -24,7 +26,6 @@ final class DetailView: BaseView {
     
     let subLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 16)
-        $0.textColor = .systemPink
     }
     
     lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
@@ -125,9 +126,9 @@ extension DetailView {
     }
     
     private func createLayout() -> UICollectionViewLayout {
-        let config = UICollectionViewCompositionalLayoutConfiguration()
+        let configuration = UICollectionViewCompositionalLayoutConfiguration()
         let layout = createCompositionalLayout()
-        layout.configuration = config
+        layout.configuration = configuration
         return layout
     }
 }
