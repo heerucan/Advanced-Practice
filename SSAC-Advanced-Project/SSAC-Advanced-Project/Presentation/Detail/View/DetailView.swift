@@ -10,7 +10,7 @@ import UIKit
 final class DetailView: BaseView {
     
     // MARK: - Property
-    
+
     let profileImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
         $0.layer.borderWidth = 1

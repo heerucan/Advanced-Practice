@@ -20,7 +20,7 @@ final class SearchViewController: BaseViewController {
     
     private let searchView = SearchView()
     private let searchViewModel = SearchViewModel()
-    private var dataSource: UICollectionViewDiffableDataSource<Int, Result>!
+    private var dataSource: UICollectionViewDiffableDataSource<Int, SearchResult>!
     
     // MARK: - LifeCycle
     
@@ -51,7 +51,7 @@ final class SearchViewController: BaseViewController {
         searchViewModel.userList // Output VM -> VC
             .withUnretained(self)
             .bind { (vc, user) in
-                var snapshot = NSDiffableDataSourceSnapshot<Int, Result>()
+                var snapshot = NSDiffableDataSourceSnapshot<Int, SearchResult>()
                 snapshot.appendSections([0])
                 snapshot.appendItems(user.results)
                 vc.dataSource.apply(snapshot, animatingDifferences: true)
@@ -93,7 +93,7 @@ final class SearchViewController: BaseViewController {
 
 extension SearchViewController {
     func configureDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, Result> { cell, indexPath, itemIdentifier in
+        let cellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, SearchResult> { cell, indexPath, itemIdentifier in
             var content = UIListContentConfiguration.valueCell()
             var back = UIBackgroundConfiguration.listPlainCell()
             content.text = itemIdentifier.username

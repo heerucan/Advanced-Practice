@@ -13,11 +13,11 @@ final class PhotoAPIManager {
     static let shared = PhotoAPIManager()
     private init() { }
     
-    typealias Completion<T> = ((Result<T, APIServiceError>) -> Void)
+    typealias Completion<T> = ((Result<T, APIError>) -> Void)
     
     // MARK: - Fetch Generic Data
     
-    func fetchGenericData<T: Decodable>(_ convertible: PhotoRouter, completion: @escaping Completion<T>) {
+    func fetchData<T: Decodable>(_ convertible: PhotoRouter, completion: @escaping Completion<T>) {
         AF.request(convertible)
             .validate(statusCode: 200...500)
             .responseDecodable(of: T.self) { response in
@@ -33,7 +33,7 @@ final class PhotoAPIManager {
     
     // MARK: - Judge Status
     
-    private func judgeStatus<T>(statusCode: Int, data: T) -> Result<T, APIServiceError> {
+    private func judgeStatus<T>(statusCode: Int, data: T) -> Result<T, APIError> {
         switch statusCode {
         case 200: return .success(data)
         case 400: return .failure(.badRequest)

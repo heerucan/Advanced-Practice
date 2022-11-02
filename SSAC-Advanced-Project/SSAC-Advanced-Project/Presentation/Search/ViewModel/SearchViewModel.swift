@@ -29,15 +29,20 @@ final class SearchViewModel: ViewModelType {
             .orEmpty
             .debounce(.seconds(1), scheduler: MainScheduler.instance)
             .distinctUntilChanged()
-            
         return Output(userList: userList, searchText: searchText)
     }
     
     func requestSearchUser(query: String, page: Int) {
-        PhotoAPIManager.shared.getSearchUser(query: query, page: page) { [weak self] (user, status, error) in
-            guard let user = user,
-                  let self = self else { return }
-            self.userList.onNext(user)
+        PhotoAPIManager.shared.fetchGenericData(.searchUser(query: query, page: page)) { [weak self] (result: Result<SearchUser, APIServiceError>) in
+            guard let self = self else { return }
+            switch result {
+            case .success(let value):
+                self.userList.onNext(value)
+                
+            case .failure(let error):
+                self.userList.onError(error)
+                print(error.localizedDescription)
+            }
         }
     }
 }

@@ -9,9 +9,9 @@ import Foundation
 
 // MARK: - SearchUser
 
-struct SearchUser: Decodable {
+struct SearchUser: Codable {
     let total, totalPages: Int
-    let results: [Result]
+    let results: [SearchResult]
 
     enum CodingKeys: String, CodingKey {
         case total
@@ -22,7 +22,7 @@ struct SearchUser: Decodable {
 
 // MARK: - Result
 
-struct Result: Decodable, Hashable {
+struct SearchResult: Codable, Hashable {
     let id: String
     let username: String
 

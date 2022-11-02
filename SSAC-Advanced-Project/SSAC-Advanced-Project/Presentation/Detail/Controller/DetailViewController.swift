@@ -8,6 +8,7 @@
 import UIKit
 
 import RxSwift
+import RxDataSources
 import RxCocoa
 
 final class DetailViewController: BaseViewController {
@@ -63,19 +64,19 @@ final class DetailViewController: BaseViewController {
                 vc.detailView.setData(data: data)
             }
             .disposed(by: disposeBag)
-
+        
         output.photoList // Output VM -> VC
             .withUnretained(self)
             .bind { (vc, photo) in
-            var snapshot = NSDiffableDataSourceSnapshot<Int, Photo>()
-            snapshot.appendSections([0])
-            snapshot.appendItems(photo)
-            vc.dataSource.apply(snapshot)
-        }
-        .disposed(by: disposeBag)
+                var snapshot = NSDiffableDataSourceSnapshot<Int, Photo>()
+                snapshot.appendSections([0])
+                snapshot.appendItems(photo)
+                vc.dataSource.apply(snapshot)
+            }
+            .disposed(by: disposeBag)
         
-        detailViewModel.requestUser(username: usernameId)
-        detailViewModel.requestUserPhoto(username: usernameId)
+//        detailViewModel.requestUser(username: usernameId)
+//        detailViewModel.requestUserPhoto(username: usernameId)
     }
 }
 
