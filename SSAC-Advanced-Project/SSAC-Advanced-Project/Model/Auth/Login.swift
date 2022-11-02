@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+// MARK: - Login
+
+struct Login: Codable {
+    let token: String
+}
