@@ -26,4 +26,5 @@ class BaseView: UIView, BaseMethodProtocol {
     
     func configureUI() { }
     func configureLayout() { }
+    func bindViewModel() { }
 }

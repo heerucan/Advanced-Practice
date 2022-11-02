@@ -10,4 +10,5 @@ import Foundation
 protocol BaseMethodProtocol {
     func configureUI()
     func configureLayout()
+    func bindViewModel()
 }

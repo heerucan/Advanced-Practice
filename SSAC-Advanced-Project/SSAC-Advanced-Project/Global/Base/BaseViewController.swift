@@ -29,4 +29,5 @@ class BaseViewController: UIViewController, BaseMethodProtocol {
     
     func configureLayout() { }
     func setupDelegate() { }
+    func bindViewModel() { }
 }

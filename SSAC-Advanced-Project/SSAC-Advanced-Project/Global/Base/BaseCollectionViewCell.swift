@@ -29,4 +29,5 @@ class BaseCollectionViewCell: UICollectionViewCell, BaseMethodProtocol {
     
     func configureUI() { }
     func configureLayout() { }
+    func bindViewModel() { }
 }
