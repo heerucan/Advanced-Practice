@@ -33,7 +33,7 @@ final class SearchViewModel: ViewModelType {
     }
     
     func requestSearchUser(query: String, page: Int) {
-        PhotoAPIManager.shared.fetchGenericData(.searchUser(query: query, page: page)) { [weak self] (result: Result<SearchUser, APIServiceError>) in
+        PhotoAPIManager.shared.fetchData(.searchUser(query: query, page: page)) { [weak self] (result: Result<SearchUser, APIError>) in
             guard let self = self else { return }
             switch result {
             case .success(let value):

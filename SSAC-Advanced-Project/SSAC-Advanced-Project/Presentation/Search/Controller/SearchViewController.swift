@@ -58,11 +58,6 @@ final class SearchViewController: BaseViewController {
             }
             .disposed(by: disposeBag)
         
-//        searchView.searchBar.searchTextField.rx.text // Input VC -> VM
-//            .orEmpty
-//            .debounce(.seconds(1), scheduler: MainScheduler.instance)
-//            .distinctUntilChanged() // 요놈들을 비즈니스 로직으로 생각했음
-        
         output.searchText
             .withUnretained(self)
             .bind(onNext: { (vc, value) in
@@ -70,7 +65,7 @@ final class SearchViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
-        searchView.collectionView.rx.itemSelected // 이것은 코디네이터.. 그렇군..
+        searchView.collectionView.rx.itemSelected
             .withUnretained(self)
             .bind(onNext: { (vc, item) in
                 vc.pushDetailView(item)
