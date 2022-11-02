@@ -8,7 +8,6 @@
 import UIKit
 
 import RxSwift
-import RxDataSources
 import RxCocoa
 
 final class DetailViewController: BaseViewController {
@@ -75,8 +74,8 @@ final class DetailViewController: BaseViewController {
             }
             .disposed(by: disposeBag)
         
-//        detailViewModel.requestUser(username: usernameId)
-//        detailViewModel.requestUserPhoto(username: usernameId)
+        detailViewModel.requestUser(username: usernameId)
+        detailViewModel.requestUserPhoto(username: usernameId)
     }
 }
 

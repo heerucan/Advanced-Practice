@@ -27,19 +27,31 @@ final class DetailViewModel: ViewModelType {
         return Output(userList: userList, photoList: photoList)
     }
     
-//    func requestUser(username: String) {
-//        PhotoAPIManager.shared.getUser(username: username) { [weak self] (user, status, error) in
-//            guard let user = user,
-//                  let self = self else { return }
-//            self.userList.onNext(user)
-//        }
-//    }
-//    
-//    func requestUserPhoto(username: String) {
-//        PhotoAPIManager.shared.getUserPhoto(username: username) { [weak self] (photo, status, error) in
-//            guard let photo = photo,
-//                  let self = self else { return }
-//            self.photoList.onNext(photo)
-//        }
-//    }
+    func requestUser(username: String) {
+        PhotoAPIManager.shared.fetchData(.userProfile(username: username)) { [weak self] (result: Result<User, APIError>) in
+            guard let self = self else { return }
+            switch result {
+            case .success(let value):
+                self.userList.onNext(value)
+                
+            case .failure(let error):
+                self.userList.onError(error)
+                print(error.localizedDescription)
+            }
+        }
+    }
+
+    func requestUserPhoto(username: String) {
+        PhotoAPIManager.shared.fetchData(.userPhotos(username: username)) { [weak self] (result: Result<[Photo], APIError>) in
+            guard let self = self else { return }
+            switch result {
+            case .success(let value):
+                self.photoList.onNext(value)
+                
+            case .failure(let error):
+                self.photoList.onError(error)
+                print(error.localizedDescription)
+            }
+        }
+    }
 }
