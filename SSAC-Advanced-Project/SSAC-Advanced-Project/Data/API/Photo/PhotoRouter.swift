@@ -9,7 +9,8 @@ import Foundation
 
 import Alamofire
 
-@frozen enum PhotoRouter: URLRequestConvertible {
+@frozen
+enum PhotoRouter: URLRequestConvertible {
     case searchUser(query: String, page: Int)
     case userProfile(username: String)
     case userPhotos(username: String)

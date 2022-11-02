@@ -6,3 +6,14 @@
 //
 
 import Foundation
+
+class BaseAPIManager {
+    func judgeStatus<T>(statusCode: Int, data: T) -> Result<T, APIError> {
+        switch statusCode {
+        case 200: return .success(data)
+        case 400: return .failure(.badRequest)
+        case 500: return .failure(.serverError)
+        default: return .failure(.networkFail)
+        }
+    }
+}
