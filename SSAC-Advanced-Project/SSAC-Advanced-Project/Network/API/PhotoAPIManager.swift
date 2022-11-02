@@ -13,53 +13,32 @@ final class PhotoAPIManager {
     static let shared = PhotoAPIManager()
     private init() { }
     
-    typealias Completion<T> = ((T?, Int?, Error?) -> Void)
-  
-    // MARK: - GET : searchUser
+    typealias Completion<T> = ((Result<T, APIServiceError>) -> Void)
     
-    func getSearchUser(query: String, page: Int, completion: @escaping Completion<SearchUser>) {
-        AF.request(PhotoRouter.getSearchUser(query: query, page: page))
-            .validate(statusCode: 200..<500).responseDecodable(of: SearchUser.self) { response in
-            let statusCode = response.response?.statusCode
-            switch response.result {
-            case .success(let value):
-                completion(value, statusCode, nil)
-
-            case .failure(let error):
-                completion(nil, statusCode, error)
+    // MARK: - Fetch Generic Data
+    
+    func fetchGenericData<T: Decodable>(_ convertible: PhotoRouter, completion: @escaping Completion<T>) {
+        AF.request(convertible)
+            .validate(statusCode: 200...500)
+            .responseDecodable(of: T.self) { response in
+                guard let statusCode = response.response?.statusCode else { return }
+                switch response.result {
+                case .success(let data):
+                    let result = self.judgeStatus(statusCode: statusCode, data: data)
+                    completion(result)
+                case .failure: completion(.failure(.badRequest))
+                }
             }
-        }
     }
     
-    // MARK: - GET : user
+    // MARK: - Judge Status
     
-    func getUser(username: String, completion: @escaping Completion<User>) {
-        AF.request(PhotoRouter.getUserProfile(username: username))
-            .validate(statusCode: 200..<500).responseDecodable(of: User.self) { response in
-            let statusCode = response.response?.statusCode
-            switch response.result {
-            case .success(let value):
-                completion(value, statusCode, nil)
-
-            case .failure(let error):
-                completion(nil, statusCode, error)
-            }
-        }
-    }
-    
-    // MARK: - GET : userPhoto
-    
-    func getUserPhoto(username: String, completion: @escaping Completion<[Photo]>) {
-        AF.request(PhotoRouter.getUserPhotos(username: username))
-            .validate(statusCode: 200..<500).responseDecodable(of: [Photo].self) { response in
-            let statusCode = response.response?.statusCode
-            switch response.result {
-            case .success(let value):
-                completion(value, statusCode, nil)
-
-            case .failure(let error):
-                completion(nil, statusCode, error)
-            }
+    private func judgeStatus<T>(statusCode: Int, data: T) -> Result<T, APIServiceError> {
+        switch statusCode {
+        case 200: return .success(data)
+        case 400: return .failure(.badRequest)
+        case 500: return .failure(.serverError)
+        default: return .failure(.networkFail)
         }
     }
 }
