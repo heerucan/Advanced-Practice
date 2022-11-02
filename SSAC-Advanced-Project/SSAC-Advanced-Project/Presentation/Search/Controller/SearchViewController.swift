@@ -43,7 +43,7 @@ final class SearchViewController: BaseViewController {
     
     // MARK: - Bind
     
-    private func bindViewModel() {
+    override func bindViewModel() {
         
         let input = SearchViewModel.Input(searchText: searchView.searchBar.rx.text)
         let output = searchViewModel.transform(input: input)

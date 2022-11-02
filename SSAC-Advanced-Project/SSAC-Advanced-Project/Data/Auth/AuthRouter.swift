@@ -11,8 +11,8 @@ import Alamofire
 
 @frozen
 enum AuthRouter: URLRequestConvertible {
-    case signup(userName: String, email: String, password: String)
-    case login(email: String, password: String)
+    case signup(_ userName: String, _ email: String, _ password: String)
+    case login(_ email: String, _ password: String)
     case profile
     
     // MARK: - BaseURL

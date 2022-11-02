@@ -48,7 +48,7 @@ final class DetailViewController: BaseViewController {
 
     // MARK: - Bind Data
     
-    private func bindViewModel() {
+    override func bindViewModel() {
         
         // 이벤트를 전달하는 객체 : 옵저버블 - viewmodel의 userList
         // 이벤트를 전달받는 객체 : 옵저버 - view의 userNameLabel, subLabel 등등

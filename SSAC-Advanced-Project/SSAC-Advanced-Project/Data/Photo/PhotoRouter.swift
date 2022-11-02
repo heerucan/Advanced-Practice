@@ -11,9 +11,9 @@ import Alamofire
 
 @frozen
 enum PhotoRouter: URLRequestConvertible {
-    case searchUser(query: String, page: Int)
-    case userProfile(username: String)
-    case userPhotos(username: String)
+    case searchUser(_ query: String, _ page: Int)
+    case userProfile(_ username: String)
+    case userPhotos(_ username: String)
     
     // MARK: - BaseURL
     

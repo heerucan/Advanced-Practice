@@ -28,7 +28,7 @@ final class DetailViewModel: ViewModelType {
     }
     
     func requestUser(username: String) {
-        PhotoAPIManager.shared.fetchData(.userProfile(username: username)) { [weak self] (result: Result<User, APIError>) in
+        GenericAPIManager.shared.fetchData(PhotoRouter.userProfile(username)) { [weak self] (result: Result<User, APIError>) in
             guard let self = self else { return }
             switch result {
             case .success(let value):
@@ -42,7 +42,7 @@ final class DetailViewModel: ViewModelType {
     }
 
     func requestUserPhoto(username: String) {
-        PhotoAPIManager.shared.fetchData(.userPhotos(username: username)) { [weak self] (result: Result<[Photo], APIError>) in
+        GenericAPIManager.shared.fetchData(PhotoRouter.userPhotos(username)) { [weak self] (result: Result<[Photo], APIError>) in
             guard let self = self else { return }
             switch result {
             case .success(let value):

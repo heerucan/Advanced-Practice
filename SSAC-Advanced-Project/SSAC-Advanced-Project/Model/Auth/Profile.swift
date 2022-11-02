@@ -10,12 +10,12 @@ import Foundation
 // MARK: - Profile
 
 struct Profile: Codable {
-    let auth: Auth
+    let myProfile: MyProfile
 }
 
-// MARK: - Auth
+// MARK: - MyProfile
 
-struct Auth: Codable {
+struct MyProfile: Codable {
     let photo, email, username: String
 
     enum CodingKeys: String, CodingKey {
