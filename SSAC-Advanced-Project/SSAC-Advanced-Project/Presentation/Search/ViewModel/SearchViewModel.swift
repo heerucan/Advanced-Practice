@@ -33,9 +33,9 @@ final class SearchViewModel: ViewModelType {
     }
     
     func requestSearchUser(query: String, page: Int) {
-        GenericAPIManager.shared.fetchData(PhotoRouter.searchUser(query, page)) { [weak self] (result: Result<SearchUser, APIError>) in
+        GenericAPIManager.shared.requestData(SearchUser.self, PhotoRouter.searchUser(query, page)) { [weak self] response in
             guard let self = self else { return }
-            switch result {
+            switch response {
             case .success(let value):
                 self.userList.onNext(value)
                 

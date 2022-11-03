@@ -24,23 +24,23 @@ final class SignupView: BaseView {
         $0.spacing = 15
     }
     
-    private let nameTextField = UITextField().then {
+    let nameTextField = UITextField().then {
         $0.placeholder = "이름을 입력해주세요"
         $0.clearButtonMode = .whileEditing
     }
     
-    private let emailTextField = UITextField().then {
+    let emailTextField = UITextField().then {
         $0.placeholder = "이메일을 입력해주세요"
         $0.clearButtonMode = .whileEditing
     }
     
-    private let passwordTextField = UITextField().then {
+    let passwordTextField = UITextField().then {
         $0.placeholder = "비밀번호는 8자리 이상입니다"
         $0.isSecureTextEntry = true
         $0.clearButtonMode = .whileEditing
     }
     
-    private let signupButton = UIButton().then {
+    let signupButton = UIButton().then {
         $0.setTitle("회원가입", for: .normal)
         $0.backgroundColor = .systemOrange
         $0.setTitleColor(.white, for: .normal)

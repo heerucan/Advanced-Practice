@@ -44,7 +44,7 @@ final class LoginViewController: BaseViewController {
     
     // MARK: - Bind
     
-    private func bindViewModel() {
+    override func bindViewModel() {
         
     }
     

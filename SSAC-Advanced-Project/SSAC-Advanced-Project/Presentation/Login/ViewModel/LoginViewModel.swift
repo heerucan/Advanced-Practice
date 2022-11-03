@@ -8,8 +8,13 @@
 import Foundation
 
 import RxSwift
+import RxCocoa
 
 final class LoginViewModel: ViewModelType {
+    
+    let email = BehaviorRelay(value: "이메일을 입력해주세요")
+    let password = BehaviorRelay(value: "비밀번호는 8자 이상입니다")
+    let token = PublishSubject<String>()
     
     struct Input {
         
@@ -21,5 +26,21 @@ final class LoginViewModel: ViewModelType {
     
     func transform(input: Input) -> Output {
         return Output()
+    }
+    
+    func login(email: String, password: String) {
+        GenericAPIManager.shared.requestData(Login.self, AuthRouter.login(email, password)) { [weak self] response in
+            guard let self = self else {
+                return
+            }
+            switch response {
+            case .success(let value):
+                self.token.onNext(value.token)
+                UserDefaults.standard.set(value.token, forKey: Matrix.token)
+                
+            case .failure(let failure):
+                self.token.onError(failure)
+            }
+        }
     }
 }

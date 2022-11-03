@@ -44,7 +44,7 @@ final class HomeViewController: BaseViewController {
     
     // MARK: - Bind
     
-    private func bindViewModel() {
+    override func bindViewModel() {
         
     }
     

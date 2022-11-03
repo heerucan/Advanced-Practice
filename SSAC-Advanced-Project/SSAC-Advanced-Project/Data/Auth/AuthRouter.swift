@@ -37,7 +37,8 @@ enum AuthRouter: URLRequestConvertible {
         case .signup, .login:
             return ["Content-Type": "application/x-www-form-urlencoded"]
         case .profile:
-            return ["Authorization": "Bearer \(UserDefaults.standard.string(forKey: Matrix.token)!)"]
+            return ["Content-Type": "application/x-www-form-urlencoded",
+                    "Authorization": "Bearer \(UserDefaults.standard.string(forKey: Matrix.token)!)"]
         }
     }
     
@@ -46,11 +47,26 @@ enum AuthRouter: URLRequestConvertible {
     private var path: String {
         switch self {
         case .signup:
-            return "/signup"
+            return "signup"
         case .login:
-            return "/login"
+            return "login"
         case .profile:
-            return "/me"
+            return "me"
+        }
+    }
+    
+    // MARK: - Parameter
+    
+    var parameters: [String: String] {
+        switch self {
+        case .signup(let username, let email, let password):
+            return ["userName": username,
+                    "email": email,
+                    "password": password]
+        case .login(let email, let password):
+            return ["email": email,
+                    "password": password]
+        default: return ["": ""]
         }
     }
     
@@ -62,6 +78,7 @@ enum AuthRouter: URLRequestConvertible {
         var request = URLRequest(url: url!)
         request.method = method
         request.headers = headers
+        request = try URLEncodedFormParameterEncoder().encode(parameters, into: request)
         return request
     }
 }

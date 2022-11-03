@@ -9,22 +9,26 @@ import Foundation
 
 import Alamofire
 
-final class GenericAPIManager: BaseAPIManager {
+final class GenericAPIManager {
     static let shared = GenericAPIManager()
-    private override init() { }
+    private init() { }
             
-    func fetchData<T: Decodable>(_ convertible: URLRequestConvertible, completion: @escaping Completion<T>) {
+    typealias Completion<T> = ((Result<T, APIError>) -> Void)
+    
+    func requestData<T: Decodable>(_ type: T.Type = T.self,
+                                 _ convertible: URLRequestConvertible,
+                                 completion: @escaping Completion<T>) {
         AF.request(convertible)
             .responseDecodable(of: T.self) { response in
-                guard let statusCode = response.response?.statusCode else {
-                    return
-                }
+                guard let statusCode = response.response?.statusCode else { return }
                 switch response.result {
                 case .success(let data):
-                    let result = self.judgeStatus(statusCode: statusCode, data: data)
-                    completion(result)
+                    completion(.success(data))
                     
-                case .failure: completion(.failure(.badRequest))
+                case .failure(_):
+                    guard let error = APIError(rawValue: statusCode) else { return }
+                    completion(.failure(error))
+                    print(error.localizedDescription)
                 }
             }
     }
