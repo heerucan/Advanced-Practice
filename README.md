@@ -208,11 +208,11 @@ private func bindData() {
 - [2. Share()를 통한 구독 공유](https://roniruny.tistory.com/267)
 - [3. Scheduler](https://roniruny.tistory.com/268)
 - [4. Error Handling - catch, catchAndReturn, retry](https://roniruny.tistory.com/269)
-- [5. RxCocoa](https://roniruny.tistory.com/270)
-- [6. Binding](https://roniruny.tistory.com/271)
-- [7. Traits](https://roniruny.tistory.com/272)
+- [5. RxCocoa (feat. TableView, CollectionView)](https://roniruny.tistory.com/270)
+- [6. Binder](https://roniruny.tistory.com/271)
+- [7. Traits - ControlProperty, ControlEvent, Driver](https://roniruny.tistory.com/272)
 
-Rx Operator 시리즈
+#### Rx Operator 시리즈
 - [1. map](https://roniruny.tistory.com/273)
 - [2. combineLatest](https://roniruny.tistory.com/274)
 - [3. zip](https://roniruny.tistory.com/275)
