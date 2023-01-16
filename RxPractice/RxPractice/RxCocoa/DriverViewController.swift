@@ -30,27 +30,26 @@ class DriverViewController: UIViewController {
     }
     
     func bind() {
-        let result = inputField.rx.text
+        let result = inputField.rx.text.asDriver()
             .flatMapLatest {
                 self.validateText($0)
-                    .observe(on: MainScheduler.instance) // Main Scheduler를 직접 지정해서 잠재적인 오류 발생 제어
-                .catchAndReturn(false)
+                    .asDriver(onErrorJustReturn: false)
             }
-            .share() // 모든 구독자가 하나의 시퀀스를 구독
+//            .share() // 모든 구독자가 하나의 시퀀스를 구독 -> driver를 사용하면 쓰지 않아도 된다.
         
         /// 3번 bind 구독처리가 되어 시퀀스가 3번 발생
         result
             .map { $0 ? "OK" : "Error" }
-            .bind(to: resultLabel.rx.text)
+            .drive(resultLabel.rx.text)
             .disposed(by: bag)
         
         result
             .map { $0 ? UIColor.blue : UIColor.red }
-            .bind(to: resultLabel.rx.backgroundColor)
+            .drive(resultLabel.rx.backgroundColor)
             .disposed(by: bag)
         
         result
-            .bind(to: sendButton.rx.isEnabled)
+            .drive(sendButton.rx.isEnabled)
             .disposed(by: bag)
     }
     
