@@ -1,6 +1,28 @@
 # 🦄 반응형 프로그래밍 뽀개기 
 
-## 1. SSAC-Advanced-Project (a.k.a Unsplash Project)
+### RxPractice 정리
+
+- [1. Observable과 Observer](https://roniruny.tistory.com/266)
+- [2. Share()를 통한 구독 공유](https://roniruny.tistory.com/267)
+- [3. Scheduler](https://roniruny.tistory.com/268)
+- [4. Error Handling - catch, catchAndReturn, retry](https://roniruny.tistory.com/269) ⭐️
+- [5. RxCocoa (feat. TableView, CollectionView)](https://roniruny.tistory.com/270)
+- [6. Binder](https://roniruny.tistory.com/271) ⭐️
+- [7. Traits - ControlProperty, ControlEvent, Driver](https://roniruny.tistory.com/272) ⭐️
+- [8. DelegateProxy](https://roniruny.tistory.com/278) ⭐️
+- [NSObject+Rx](https://roniruny.tistory.com/279?category=1078537)
+
+### Rx Operator 시리즈
+- [map](https://roniruny.tistory.com/273)
+- [combineLatest](https://roniruny.tistory.com/274)
+- [zip](https://roniruny.tistory.com/275)
+
+<br>
+<br>
+<br>
+<hr>
+
+## 2. SSAC-Advanced-Project (a.k.a Unsplash Project)
 ### 1. Search 뷰
 
 #### SearchViewModel
@@ -198,21 +220,5 @@ private func bindData() {
 - 이벤트를 전달받는 객체 : 옵저버 - view의 userNameLabel, subLabel 등등    
 - bind는 항상 Main에서 작동하니까 Main 큐 처리를 해주지 않아도 됨    
 
----
 
-<br>
 
-## 2. RxPractice
-
-- [1. Observable과 Observer](https://roniruny.tistory.com/266)
-- [2. Share()를 통한 구독 공유](https://roniruny.tistory.com/267)
-- [3. Scheduler](https://roniruny.tistory.com/268)
-- [4. Error Handling - catch, catchAndReturn, retry](https://roniruny.tistory.com/269)
-- [5. RxCocoa (feat. TableView, CollectionView)](https://roniruny.tistory.com/270)
-- [6. Binder](https://roniruny.tistory.com/271)
-- [7. Traits - ControlProperty, ControlEvent, Driver](https://roniruny.tistory.com/272)
-
-#### Rx Operator 시리즈
-- [1. map](https://roniruny.tistory.com/273)
-- [2. combineLatest](https://roniruny.tistory.com/274)
-- [3. zip](https://roniruny.tistory.com/275)
