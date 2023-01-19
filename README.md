@@ -12,12 +12,16 @@
 - [8. DelegateProxy](https://roniruny.tistory.com/278) ⭐️
 - [NSObject+Rx](https://roniruny.tistory.com/279?category=1078537)
 
+<<<<<<< HEAD
 <br>
 
+=======
+>>>>>>> 59b2a70f69f85dad4214ce4dbf5438f5d2603593
 ### Rx Operator 시리즈
 - [map](https://roniruny.tistory.com/273)
 - [combineLatest](https://roniruny.tistory.com/274)
 - [zip](https://roniruny.tistory.com/275)
+<<<<<<< HEAD
 * **flatMap**은 방출된 항목의 값이 바뀌면 새로운 항목을 방출한다.
 이해한 바로는 flatMap은 모든 옵저버블이 값을 방출할 때마다 그 값들을 가지고 있다가 최종적으로 하나의 옵저버블로 합쳐주는 동작. (나랑 본순이 키가 클 때마다 모든 키를 기록해서 다 방출하는 그런 느낌 같다.) -> 네트워크 처리에서 자주 쓰임
 * **flatMapLatest**는 내가 태어나서 내 키를 계속 기록해주다가 똥개가 태어난 순간부터는 내 키는 기록하지 않는 것. 즉, 새로운 옵저버블(시퀀스)이 생성되는 순간 이전 옵저버블이 방출하는 이벤트는 무시하는 것
@@ -56,6 +60,8 @@ let response = Observable.just(booksUrlStr)
 
 - 최종적으로 bookUrlStr이라는 문자열을 방출하는 옵저버블이 Observable<Data>를 방출하는 옵저버블이 되게 된다.
 
+=======
+>>>>>>> 59b2a70f69f85dad4214ce4dbf5438f5d2603593
 
 <br>
 <br>
