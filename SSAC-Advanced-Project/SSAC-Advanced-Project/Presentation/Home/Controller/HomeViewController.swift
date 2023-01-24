@@ -19,7 +19,7 @@ final class HomeViewController: BaseViewController {
     // MARK: - Property
     
     private let homeView: HomeView
-    private let homeViewModel: HomeViewModel
+    var homeViewModel: HomeViewModel
     
     init(view: HomeView, viewModel: HomeViewModel) {
         self.homeView = view

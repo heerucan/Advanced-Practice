@@ -19,7 +19,7 @@ final class LoginViewController: BaseViewController {
     // MARK: - Property
     
     private let loginView: LoginView
-    private let loginViewModel: LoginViewModel
+    var loginViewModel: LoginViewModel
     
     init(view: LoginView, viewModel: LoginViewModel) {
         self.loginView = view
@@ -38,15 +38,14 @@ final class LoginViewController: BaseViewController {
         bindViewModel()
     }
     
-    // MARK: - Configure UI & Layout
-    
-    override func configureUI() {
-        view.backgroundColor = .white
-    }
-    
     // MARK: - Bind
     
     override func bindViewModel() {
-        
+        loginView.loginButton.rx.tap
+            .withUnretained(self)
+            .subscribe { vc,_ in
+                vc.loginViewModel.goToHomeView()
+            }
+            .disposed(by: disposeBag)
     }
 }

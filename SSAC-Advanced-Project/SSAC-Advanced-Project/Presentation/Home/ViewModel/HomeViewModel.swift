@@ -11,6 +11,8 @@ import RxSwift
 
 final class HomeViewModel: ViewModelType {
     
+    weak var coordinator: AppCoordinator?
+    
     struct Input {
         
     }

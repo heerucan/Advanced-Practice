@@ -12,6 +12,8 @@ import RxCocoa
 
 final class LoginViewModel: ViewModelType {
     
+    weak var coordinator: AppCoordinator?
+    
     let email = BehaviorRelay(value: "이메일을 입력해주세요")
     let password = BehaviorRelay(value: "비밀번호는 8자 이상입니다")
     let token = PublishSubject<String>()
@@ -26,6 +28,10 @@ final class LoginViewModel: ViewModelType {
     
     func transform(input: Input) -> Output {
         return Output()
+    }
+    
+    func goToHomeView() {
+        coordinator?.goToHomeVC()
     }
     
     func login(email: String, password: String) {
