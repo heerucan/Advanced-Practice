@@ -12,8 +12,8 @@ final class HomeView: BaseView {
     // MARK: - Property
     
     private let welcomeLabel = UILabel().then {
-        $0.font = .boldSystemFont(ofSize: 25)
-        $0.text = "Unsplash Home"
+        $0.font = .boldSystemFont(ofSize: 50)
+        $0.text = "HOME"
         $0.numberOfLines = 0
         $0.textAlignment = .center
     }
@@ -46,18 +46,18 @@ final class HomeView: BaseView {
                      searchButton])
         
         welcomeLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(80)
+            make.top.equalToSuperview().inset(250)
             make.centerX.equalToSuperview()
         }
         
         logoutButton.snp.makeConstraints { make in
-            make.bottom.equalTo(searchButton.snp.top).offset(-30)
+            make.top.equalTo(welcomeLabel.snp.bottom).offset(30)
             make.directionalHorizontalEdges.equalToSuperview().inset(20)
             make.height.equalTo(50)
         }
         
         searchButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().inset(50)
+            make.top.equalTo(logoutButton.snp.bottom).offset(30)
             make.directionalHorizontalEdges.equalToSuperview().inset(20)
             make.height.equalTo(50)
         }

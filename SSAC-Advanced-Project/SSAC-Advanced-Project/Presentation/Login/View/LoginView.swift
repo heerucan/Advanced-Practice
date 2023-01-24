@@ -7,6 +7,9 @@
 
 import UIKit
 
+import SnapKit
+import Then
+
 final class LoginView: BaseView {
     
     // MARK: - Property
@@ -34,14 +37,7 @@ final class LoginView: BaseView {
         $0.clearButtonMode = .whileEditing
     }
     
-    private let signupButton = UIButton().then {
-        $0.setTitle("회원가입", for: .normal)
-        $0.backgroundColor = .systemOrange
-        $0.setTitleColor(.white, for: .normal)
-        $0.titleLabel?.font = .boldSystemFont(ofSize: 15)
-    }
-    
-    private let loginButton = UIButton().then {
+    let loginButton = UIButton().then {
         $0.setTitle("로그인", for: .normal)
         $0.backgroundColor = .systemOrange
         $0.setTitleColor(.white, for: .normal)
@@ -59,7 +55,6 @@ final class LoginView: BaseView {
     override func configureLayout() {
         addSubviews([loginLabel,
                      fieldStackView,
-                     signupButton,
                      loginButton])
         
         loginLabel.snp.makeConstraints { make in
@@ -72,16 +67,10 @@ final class LoginView: BaseView {
             make.directionalHorizontalEdges.equalToSuperview().inset(20)
         }
         
-        signupButton.snp.makeConstraints { make in
+        loginButton.snp.makeConstraints { make in
             make.top.equalTo(fieldStackView.snp.bottom).offset(50)
             make.directionalHorizontalEdges.equalToSuperview().inset(20)
-            make.height.equalTo(45)
-        }
-        
-        loginButton.snp.makeConstraints { make in
-            make.top.equalTo(signupButton.snp.bottom).offset(30)
-            make.directionalHorizontalEdges.equalToSuperview().inset(20)
-            make.height.equalTo(45)
+            make.height.equalTo(50)
         }
         
         [emailTextField, passwordTextField].forEach {
