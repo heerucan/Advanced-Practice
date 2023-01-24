@@ -18,9 +18,15 @@ final class SearchViewController: BaseViewController {
     
     // MARK: - Property
     
-    private let searchView = SearchView()
-    private let searchViewModel = SearchViewModel()
+    private let searchView: SearchView
+    private let searchViewModel: SearchViewModel
     private var dataSource: UICollectionViewDiffableDataSource<Int, SearchResult>!
+    
+    init(view: SearchView, viewModel: SearchViewModel) {
+        self.searchView = view
+        self.searchViewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
     
     // MARK: - LifeCycle
     
@@ -78,7 +84,9 @@ final class SearchViewController: BaseViewController {
     
     private func pushDetailView(_ indexPath: IndexPath) {
         guard let item = dataSource.itemIdentifier(for: indexPath) else { return }
-        let viewController = DetailViewController()
+        let detailView = DetailView()
+        let detailViewModel = DetailViewModel()
+        let viewController = DetailViewController(view: detailView, viewModel: detailViewModel)
         viewController.usernameId = item.username
         navigationController?.pushViewController(viewController, animated: true)
     }

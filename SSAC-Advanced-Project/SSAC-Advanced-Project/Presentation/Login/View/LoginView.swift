@@ -81,7 +81,7 @@ final class LoginView: BaseView {
         loginButton.snp.makeConstraints { make in
             make.top.equalTo(signupButton.snp.bottom).offset(30)
             make.directionalHorizontalEdges.equalToSuperview().inset(20)
-            make.height.equalTo(50)
+            make.height.equalTo(45)
         }
         
         [emailTextField, passwordTextField].forEach {
@@ -89,7 +89,5 @@ final class LoginView: BaseView {
             $0.snp.makeConstraints { make in
             make.height.equalTo(45)
         }}
-        
-        // MARK: - Custom Method
     }
 }

@@ -11,14 +11,9 @@ target 'RxPractice' do
 
   # RxSwift Community Projects
   pod 'NSObject+Rx'
-  pod 'RxSwiftExt'
   pod 'Action'
   pod 'RxDataSources'
-  pod "RxGesture"
-  pod 'RxReachability'
-  pod 'RxKeyboard'
+  pod 'RxCoreData
 
-  # Networking
-  pod 'RxAlamofire'
 
 end

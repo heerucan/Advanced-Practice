@@ -18,9 +18,15 @@ final class LoginViewController: BaseViewController {
     
     // MARK: - Property
     
-    private let loginView = LoginView()
-    private let loginViewModel = LoginViewModel()
-
+    private let loginView: LoginView
+    private let loginViewModel: LoginViewModel
+    
+    init(view: LoginView, viewModel: LoginViewModel) {
+        self.loginView = view
+        self.loginViewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
     // MARK: - LifeCycle
     
     override func loadView() {
@@ -38,18 +44,9 @@ final class LoginViewController: BaseViewController {
         view.backgroundColor = .white
     }
     
-    override func configureLayout() {
-        
-    }
-    
     // MARK: - Bind
     
     override func bindViewModel() {
         
     }
-    
-    // MARK: - Custom Method
-    
-    
-    // MARK: - @objc
 }

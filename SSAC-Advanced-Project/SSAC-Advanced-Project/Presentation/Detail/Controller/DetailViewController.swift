@@ -22,10 +22,16 @@ final class DetailViewController: BaseViewController {
     
     var usernameId = ""
     
-    private let detailView = DetailView()
+    private let detailView: DetailView
+    private let detailViewModel: DetailViewModel
     private let detailSupplementaryView = DetailSupplementaryView()
-    private let detailViewModel = DetailViewModel()
     private var dataSource: UICollectionViewDiffableDataSource<Int, Photo>!
+    
+    init(view: DetailView, viewModel: DetailViewModel) {
+        self.detailView = view
+        self.detailViewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
     
     // MARK: - LifeCycle
     

@@ -62,6 +62,4 @@ final class HomeView: BaseView {
             make.height.equalTo(50)
         }
     }
-    
-    // MARK: - Custom Method
 }

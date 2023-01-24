@@ -18,8 +18,14 @@ final class HomeViewController: BaseViewController {
     
     // MARK: - Property
     
-    private let homeView = HomeView()
-    private let homeViewModel = HomeViewModel()
+    private let homeView: HomeView
+    private let homeViewModel: HomeViewModel
+    
+    init(view: HomeView, viewModel: HomeViewModel) {
+        self.homeView = view
+        self.homeViewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
 
     // MARK: - LifeCycle
     
