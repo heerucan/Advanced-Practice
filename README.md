@@ -1,6 +1,6 @@
 # 🦄 반응형 프로그래밍 뽀개기 
 
-### RxPractice 정리
+## 1. RxPractice 정리
 
 - [1. Observable과 Observer](https://roniruny.tistory.com/266)
 - [2. Share()를 통한 구독 공유](https://roniruny.tistory.com/267)
@@ -14,7 +14,7 @@
 
 <br>
 
-### Rx Operator 시리즈
+## 2. Rx Operator 시리즈
 - [map](https://roniruny.tistory.com/273)
 - [combineLatest](https://roniruny.tistory.com/274)
 - [zip](https://roniruny.tistory.com/275)
@@ -24,7 +24,7 @@
 
 <br>
 
-### Rx Networking
+## 3. Rx Networking
 
 ```swift
 let response = Observable.just(booksUrlStr)
@@ -58,10 +58,15 @@ let response = Observable.just(booksUrlStr)
 
 <br>
 <br>
-<br>
-<hr>
 
-## 2. SSAC-Advanced-Project (a.k.a Unsplash Project)
+## 4-1. Coordinator 정리
+- [의존성주입, Coordinator 적용 정리](https://huree-can-do-it.notion.site/Coordinator-b649e56861d04fdd9ffbd47f5ec0a10b)
+
+
+<br>
+<br>
+
+## 4-2. SSAC-Advanced-Project 정리 (a.k.a Unsplash Project)
 ### 1. Search 뷰
 
 #### SearchViewModel
