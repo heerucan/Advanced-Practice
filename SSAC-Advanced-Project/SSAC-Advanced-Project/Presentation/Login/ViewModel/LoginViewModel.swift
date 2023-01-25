@@ -19,15 +19,15 @@ final class LoginViewModel: ViewModelType {
     let token = PublishSubject<String>()
     
     struct Input {
-        
+        var loginTap: ControlEvent<Void>
     }
     
     struct Output {
-        
+        var loginTap: ControlEvent<Void>
     }
     
-    func transform(input: Input) -> Output {
-        return Output()
+    func transform(input: Input) -> Output {        
+        return Output(loginTap: input.loginTap)
     }
     
     func login(email: String, password: String) {
