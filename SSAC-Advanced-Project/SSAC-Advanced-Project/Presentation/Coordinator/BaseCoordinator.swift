@@ -5,4 +5,18 @@
 //  Created by heerucan on 2023/01/25.
 //
 
-import Foundation
+import UIKit
+
+class BaseCoordinator: Coordinator {
+    var parentCoordinator: Coordinator? = nil
+    var childCoordinators: [Coordinator] = []
+    var navigationController: UINavigationController
+
+    init(navigationController: UINavigationController) {
+        self.navigationController = navigationController
+    }
+
+    func start() {
+        fatalError("Start method must be implemented")
+    }
+}
