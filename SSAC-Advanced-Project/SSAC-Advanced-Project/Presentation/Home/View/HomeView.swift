@@ -18,7 +18,7 @@ final class HomeView: BaseView {
         $0.textAlignment = .center
     }
     
-    private let logoutButton = UIButton().then {
+    let logoutButton = UIButton().then {
         $0.setTitle("로그아웃", for: .normal)
         $0.backgroundColor = .systemOrange
         $0.setTitleColor(.white, for: .normal)

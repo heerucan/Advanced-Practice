@@ -10,6 +10,10 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+protocol HomeViewDelegate: AnyObject {
+    func logout() // finish Home Scene
+}
+
 final class HomeViewController: BaseViewController {
     
     // MARK: - DisposeBag
@@ -20,6 +24,8 @@ final class HomeViewController: BaseViewController {
     
     private let homeView: HomeView
     var homeViewModel: HomeViewModel
+    
+    weak var homeViewDelegate: HomeViewDelegate?
     
     init(view: HomeView, viewModel: HomeViewModel) {
         self.homeView = view
@@ -38,24 +44,18 @@ final class HomeViewController: BaseViewController {
         bindViewModel()
     }
     
-    // MARK: - Configure UI & Layout
-    
-    override func configureUI() {
-        view.backgroundColor = .white
-    }
-    
-    override func configureLayout() {
-        
-    }
-    
     // MARK: - Bind
     
     override func bindViewModel() {
         
+        let input = HomeViewModel.Input(logoutTap: homeView.logoutButton.rx.tap)
+        let output = homeViewModel.transform(input: input)
+        
+        output.logoutTap
+            .withUnretained(self)
+            .subscribe { vc,_ in
+                vc.homeViewDelegate?.logout()
+            }
+            .disposed(by: disposeBag)
     }
-    
-    // MARK: - Custom Method
-    
-    
-    // MARK: - @objc
 }
