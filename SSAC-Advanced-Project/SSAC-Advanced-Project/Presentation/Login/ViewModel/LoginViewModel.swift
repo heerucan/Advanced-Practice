@@ -30,10 +30,6 @@ final class LoginViewModel: ViewModelType {
         return Output()
     }
     
-    func goToHomeView() {
-        coordinator?.goToHomeVC()
-    }
-    
     func login(email: String, password: String) {
         GenericAPIManager.shared.requestData(Login.self, AuthRouter.login(email, password)) { [weak self] response in
             guard let self = self else {

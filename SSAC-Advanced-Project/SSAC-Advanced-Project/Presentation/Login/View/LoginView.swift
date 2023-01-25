@@ -14,11 +14,6 @@ final class LoginView: BaseView {
     
     // MARK: - Property
     
-    private let loginLabel = UILabel().then {
-        $0.font = .boldSystemFont(ofSize: 25)
-        $0.text = "로그인"
-    }
-    
     private lazy var fieldStackView = UIStackView(arrangedSubviews: [emailTextField, passwordTextField]).then {
         $0.axis = .vertical
         $0.alignment = .fill
@@ -53,17 +48,11 @@ final class LoginView: BaseView {
     // MARK: - Configure UI & Layout
     
     override func configureLayout() {
-        addSubviews([loginLabel,
-                     fieldStackView,
+        addSubviews([fieldStackView,
                      loginButton])
         
-        loginLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(80)
-            make.centerX.equalToSuperview()
-        }
-        
         fieldStackView.snp.makeConstraints { make in
-            make.top.equalTo(loginLabel.snp.bottom).offset(80)
+            make.top.equalToSuperview().inset(150)
             make.directionalHorizontalEdges.equalToSuperview().inset(20)
         }
         

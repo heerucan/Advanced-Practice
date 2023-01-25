@@ -38,6 +38,11 @@ final class LoginViewController: BaseViewController {
         bindViewModel()
     }
     
+    override func configureUI() {
+        super.configureUI()
+        self.navigationItem.hidesBackButton = true
+    }
+    
     // MARK: - Bind
     
     override func bindViewModel() {
