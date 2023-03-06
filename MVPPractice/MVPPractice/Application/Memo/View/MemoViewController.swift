@@ -7,18 +7,18 @@
 
 import UIKit
 
-final class MemoViewController: UIViewController, MemoViewProtocol {
+final class MemoViewController: UIViewController {
     
-    enum Section: CaseIterable, Hashable {
+    private enum Section: CaseIterable, Hashable {
         case main
     }
     
     // MARK: - Property
     
-    let memo = [Memo(content: "첫 번째 메모"), Memo(content: "두 번째 메모")]
-    
-    private var dataSource: UICollectionViewDiffableDataSource<Section, Memo>! = nil
-    private var snapshot = NSDiffableDataSourceSnapshot<Section, Memo>()
+    private var memoList = Memo(contents: ["하나", "둘", "셋"])
+    private var presenter: MemoPresenterProtocol!
+    private var dataSource: UICollectionViewDiffableDataSource<Section, String>! = nil
+    private var snapshot = NSDiffableDataSourceSnapshot<Section, String>()
     
     private lazy var memoCollectionView = UICollectionView(
         frame: .zero,
@@ -35,6 +35,9 @@ final class MemoViewController: UIViewController, MemoViewProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUI()
+        configureLayout()
+        configureDataSource()
+        presenter = MemoPresenter(view: self, model: memoList)
     }
     
     // MARK: - UI & Layout
@@ -45,8 +48,6 @@ final class MemoViewController: UIViewController, MemoViewProtocol {
         navigationItem.title = "메모리스트"
         navigationItem.rightBarButtonItem = addButton
         memoCollectionView.backgroundColor = .systemBackground
-        configureLayout()
-        configureDataSource()
     }
     
     private func configureLayout() {
@@ -57,37 +58,46 @@ final class MemoViewController: UIViewController, MemoViewProtocol {
         memoCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         memoCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
-
-    // MARK: - Method
     
-    func addMemo(memo: Memo) {
-        
-    }
-    
-    func deleteMemo(index: Int) {
-        
-    }
-    
-    func updateMemo(index: Int, content: String) {
-        
-    }
-                                                   
     // MARK: - @objc
+    
     @objc func addButtonClicked(sender: UIBarButtonItem) {
-        let alertVC = UIAlertController(title: "메모추가", message: "간단한 메모를 작성하세요", preferredStyle: .alert)
+        let alertVC = UIAlertController( title: "메모추가", message: "간단한 메모를 작성하세요", preferredStyle: .alert)
         alertVC.addTextField { textField in
             textField.placeholder = "ex. 알고리즘 풀기"
             textField.textColor = .black
         }
-        let cancel = UIAlertAction(title: "취소", style: .cancel) { _ in
+        let cancel = UIAlertAction(title: "취소", style: .destructive) { _ in
             self.dismiss(animated: false)
         }
-        let ok = UIAlertAction(title: "추가", style: .default) { _ in
-            print("메모추가완료")
+        let ok = UIAlertAction(title: "추가", style: .default) { [weak self] _ in
+            if let title = alertVC.textFields?.first!.text, !title.isEmpty {
+                // View로 사용자의 입력이 들어왔음 -> presenter에게 작업요청
+                print("2. view가 presenter에게 addButton이 눌린 것을 전달")
+                self?.presenter?.addButtonClicked(with: Memo(contents: [title]))
+            }
         }
         alertVC.addAction(cancel)
         alertVC.addAction(ok)
         self.present(alertVC, animated: true)
+    }
+}
+
+// MARK: - MemoViewProtocol Method
+
+extension MemoViewController: MemoViewProtocol {
+    func addMemo(memo: Memo) {
+        // MemoPresenter에서 MemoViewProtocol의 메소드에 모델의 데이터를 넣어서 전달하면, View에서는 데이터를 받아서
+        // VC의 memoList에 추가하는 방식
+        print("4. view가 presenter로부터 결과를 받았음", memo)
+        snapshot.appendItems(memo.contents)
+        dataSource.apply(snapshot, animatingDifferences: true)
+    }
+    
+    func deleteMemo(index: Int, memo: Memo) {
+        print("view가 presenter로부터 삭제 결과를 받았음")
+        snapshot.appendItems(memo.contents)
+        dataSource.apply(snapshot, animatingDifferences: true)
     }
 }
 
@@ -113,19 +123,19 @@ extension MemoViewController {
         }
         return layout
     }
-
+    
     private func configureDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<MemoCollectionViewCell, Memo> {
+        let cellRegistration = UICollectionView.CellRegistration<MemoCollectionViewCell, String> {
             cell, indexPath, itemIdentifier in
         }
         dataSource = UICollectionViewDiffableDataSource(collectionView: memoCollectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
             let cell = collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: itemIdentifier)
-            cell.contentLabel.text = itemIdentifier.content
+            cell.contentLabel.text = itemIdentifier
             return cell
         })
         
         snapshot.appendSections([Section.main])
-        snapshot.appendItems(memo)
+        snapshot.appendItems(memoList.contents)
         dataSource.apply(snapshot, animatingDifferences: true)
     }
 }

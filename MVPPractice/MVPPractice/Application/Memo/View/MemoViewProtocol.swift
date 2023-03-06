@@ -1,5 +1,5 @@
 //
-//  MemoView.swift
+//  MemoViewProtocol.swift
 //  MVPPractice
 //
 //  Created by heerucan on 2023/03/03.
@@ -13,6 +13,5 @@ import Foundation
  */
 protocol MemoViewProtocol: AnyObject {
     func addMemo(memo: Memo)
-    func deleteMemo(index: Int)
-    func updateMemo(index: Int, content: String)
+    func deleteMemo(index: Int, memo: Memo)
 }
