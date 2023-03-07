@@ -10,5 +10,5 @@ import Foundation
 protocol MemoPresenterProtocol: AnyObject {
     init(view: MemoViewProtocol, model: Memo)
     func addButtonClicked(with memo: Memo)
-    func deleteSelectedMemo(for index: Int, with memo: Memo)
+    func deleteSelectedMemo(for indexPath: IndexPath)
 }

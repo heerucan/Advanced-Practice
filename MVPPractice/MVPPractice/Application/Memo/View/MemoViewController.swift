@@ -62,6 +62,7 @@ final class MemoViewController: UIViewController {
     // MARK: - @objc
     
     @objc func addButtonClicked(sender: UIBarButtonItem) {
+        print("1. 사용자가 + 버튼을 눌렀음")
         let alertVC = UIAlertController( title: "메모추가", message: "간단한 메모를 작성하세요", preferredStyle: .alert)
         alertVC.addTextField { textField in
             textField.placeholder = "ex. 알고리즘 풀기"
@@ -73,7 +74,8 @@ final class MemoViewController: UIViewController {
         let ok = UIAlertAction(title: "추가", style: .default) { [weak self] _ in
             if let title = alertVC.textFields?.first!.text, !title.isEmpty {
                 // View로 사용자의 입력이 들어왔음 -> presenter에게 작업요청
-                print("2. view가 presenter에게 addButton이 눌린 것을 전달")
+                print("2. 사용자의 입력(textField.text)이 View를 통해 들어왔음")
+                print("3. View -> Presenter에게 input에 대한 작업을 요청 - presenter.addButtonClicked")
                 self?.presenter?.addButtonClicked(with: Memo(contents: [title]))
             }
         }
@@ -89,15 +91,17 @@ extension MemoViewController: MemoViewProtocol {
     func addMemo(memo: Memo) {
         // MemoPresenter에서 MemoViewProtocol의 메소드에 모델의 데이터를 넣어서 전달하면, View에서는 데이터를 받아서
         // VC의 memoList에 추가하는 방식
-        print("4. view가 presenter로부터 결과를 받았음", memo)
+        print("6. View는 presenter를 통해 전달받은 데이터를 통해 화면 ui update - MemoView, addMemo")
         snapshot.appendItems(memo.contents)
         dataSource.apply(snapshot, animatingDifferences: true)
     }
     
-    func deleteMemo(index: Int, memo: Memo) {
-        print("view가 presenter로부터 삭제 결과를 받았음")
-        snapshot.appendItems(memo.contents)
-        dataSource.apply(snapshot, animatingDifferences: true)
+    func deleteMemo(for indexPath: IndexPath, memo: Memo) {
+        print("view가 presenter로부터 삭제 결과를 받았음---->>>", indexPath)
+        if let deleteItem = dataSource.itemIdentifier(for: indexPath) {
+            snapshot.deleteItems([deleteItem])
+            dataSource.apply(snapshot, animatingDifferences: true)
+        }
     }
 }
 
@@ -105,22 +109,15 @@ extension MemoViewController: MemoViewProtocol {
 
 extension MemoViewController {
     private func createLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
-            let itemSize = NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1),
-                heightDimension: .fractionalHeight(1))
-            let item = NSCollectionLayoutItem(layoutSize: itemSize)
-            
-            let groupSize = NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1),
-                heightDimension: .estimated(50))
-            let group = NSCollectionLayoutGroup.vertical(
-                layoutSize: groupSize,
-                subitems: [item])
-            
-            let section = NSCollectionLayoutSection(group: group)
-            return section
+        var configuration = UICollectionLayoutListConfiguration(appearance: .grouped)
+        configuration.trailingSwipeActionsConfigurationProvider = { indexPath in
+            let deleteAction = UIContextualAction(style: .destructive, title: "삭제") { [weak self] action, view, completion in
+                guard let self = self else { return }
+                self.presenter.deleteSelectedMemo(for: indexPath)
+            }
+            return UISwipeActionsConfiguration(actions: [deleteAction])
         }
+        let layout = UICollectionViewCompositionalLayout.list(using: configuration)
         return layout
     }
     

@@ -28,14 +28,16 @@ final class MemoPresenter: MemoPresenterProtocol {
     // 모델에서 메모를 추가/삭제할 때 Presenter를 거쳐 View에게 알리게 된다.
     // View에서는 Presenter를 거쳐 Model에 변경사항을 알리게 된다.
     func addButtonClicked(with memo: Memo) {
-        print("3. Presenter가 Model에 새로운 메모를 추가")
+        print("4. Presenter 코드 내에서 -> Model에게 새로운 메모가 추가하도록 알림 - memoModel.addMemo")
         memoModel.addMemo(memo)
+        print("5. Presenter 코드 내에서 -> View에게 변경된 데이터를 응답 - memoView.addMemo")
         memoView?.addMemo(memo: memo)
     }
     
-    func deleteSelectedMemo(for index: Int, with memo: Memo) {
-        print("view가 presenter에게 삭제가 일어났다고 알림")
-        memoModel.contents.remove(at: index)
-        memoView?.deleteMemo(index: index, memo: memo)
+    func deleteSelectedMemo(for indexPath: IndexPath) {
+        print("View가 Presenter에게 삭제가 일어났다고 알림")
+        // MARK: - ?? 여기서 Presenter가 Model에게서 데이터 가져오는 부분이 없는데 몰까
+        print("Presenter는 View에게 삭제한 indexPath 정보를 전달함")
+        memoView?.deleteMemo(for: indexPath, memo: memoModel)
     }
 }
