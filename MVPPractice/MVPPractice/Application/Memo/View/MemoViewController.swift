@@ -62,7 +62,6 @@ final class MemoViewController: UIViewController {
     // MARK: - @objc
     
     @objc func addButtonClicked(sender: UIBarButtonItem) {
-        print("1. 사용자가 + 버튼을 눌렀음")
         let alertVC = UIAlertController( title: "메모추가", message: "간단한 메모를 작성하세요", preferredStyle: .alert)
         alertVC.addTextField { textField in
             textField.placeholder = "ex. 알고리즘 풀기"
@@ -74,8 +73,6 @@ final class MemoViewController: UIViewController {
         let ok = UIAlertAction(title: "추가", style: .default) { [weak self] _ in
             if let title = alertVC.textFields?.first!.text, !title.isEmpty {
                 // View로 사용자의 입력이 들어왔음 -> presenter에게 작업요청
-                print("2. 사용자의 입력(textField.text)이 View를 통해 들어왔음")
-                print("3. View -> Presenter에게 input에 대한 작업을 요청 - presenter.addButtonClicked")
                 self?.presenter?.addButtonClicked(with: Memo(contents: [title]))
             }
         }
@@ -91,13 +88,11 @@ extension MemoViewController: MemoViewProtocol {
     func addMemo(memo: Memo) {
         // MemoPresenter에서 MemoViewProtocol의 메소드에 모델의 데이터를 넣어서 전달하면, View에서는 데이터를 받아서
         // VC의 memoList에 추가하는 방식
-        print("6. View는 presenter를 통해 전달받은 데이터를 통해 화면 ui update - MemoView, addMemo")
         snapshot.appendItems(memo.contents)
         dataSource.apply(snapshot, animatingDifferences: true)
     }
     
     func deleteMemo(for indexPath: IndexPath, memo: Memo) {
-        print("view가 presenter로부터 삭제 결과를 받았음---->>>", indexPath)
         if let deleteItem = dataSource.itemIdentifier(for: indexPath) {
             snapshot.deleteItems([deleteItem])
             dataSource.apply(snapshot, animatingDifferences: true)
