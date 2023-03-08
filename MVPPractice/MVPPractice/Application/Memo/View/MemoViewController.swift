@@ -48,6 +48,7 @@ final class MemoViewController: UIViewController {
         navigationItem.title = "메모리스트"
         navigationItem.rightBarButtonItem = addButton
         memoCollectionView.backgroundColor = .systemBackground
+        memoCollectionView.delegate = self
     }
     
     private func configureLayout() {
@@ -98,6 +99,14 @@ extension MemoViewController: MemoViewProtocol {
             dataSource.apply(snapshot, animatingDifferences: true)
         }
     }
+    
+    func updateMemo(for indexPath: IndexPath, memo: Memo) {
+        // view가 데이터 전달받고, presenter를 통해서 ui 갱신...
+        snapshot.deleteAllItems()
+        snapshot.appendSections([Section.main])
+        snapshot.appendItems(memo.contents)
+        dataSource.apply(snapshot, animatingDifferences: true)
+    }
 }
 
 // MARK: - Compositional Layout & DiffableDataSource
@@ -125,9 +134,36 @@ extension MemoViewController {
             cell.contentLabel.text = itemIdentifier
             return cell
         })
-        
         snapshot.appendSections([Section.main])
         snapshot.appendItems(memoList.contents)
         dataSource.apply(snapshot, animatingDifferences: true)
+    }
+}
+
+// MARK: - UICollectonViewDelegate {
+
+extension MemoViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let memo = self.dataSource.itemIdentifier(for: indexPath) else { return }
+        
+        let alertVC = UIAlertController( title: "메모수정", message: "메모를 수정하세요", preferredStyle: .alert)
+        alertVC.addTextField { textField in
+            textField.placeholder = "ex. 알고리즘 풀기"
+            textField.textColor = .black
+            textField.text = memo
+        }
+        let cancel = UIAlertAction(title: "취소", style: .destructive) { _ in
+            self.dismiss(animated: false)
+        }
+        let ok = UIAlertAction(title: "추가", style: .default) { [weak self] _ in
+            if let title = alertVC.textFields?.first!.text, !title.isEmpty {
+                if title == memo { self?.dismiss(animated: true) }
+                // View로 사용자의 입력이 들어왔음 -> presenter에게 작업요청
+                self?.presenter?.updateSelectedMemo(for: indexPath, with: title)
+            }
+        }
+        alertVC.addAction(cancel)
+        alertVC.addAction(ok)
+        self.present(alertVC, animated: true)
     }
 }

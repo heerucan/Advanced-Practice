@@ -14,4 +14,5 @@ import Foundation
 protocol MemoViewProtocol: AnyObject {
     func addMemo(memo: Memo)
     func deleteMemo(for indexPath: IndexPath, memo: Memo)
+    func updateMemo(for indexPath: IndexPath, memo: Memo)
 }

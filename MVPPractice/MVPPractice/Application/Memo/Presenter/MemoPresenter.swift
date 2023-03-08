@@ -35,4 +35,9 @@ final class MemoPresenter: MemoPresenterProtocol {
     func deleteSelectedMemo(for indexPath: IndexPath) {
         memoView?.deleteMemo(for: indexPath, memo: memoModel)
     }
+    
+    func updateSelectedMemo(for indexPath: IndexPath, with memo: String) {
+        memoModel.contents[indexPath.item] = memo
+        memoView?.updateMemo(for: indexPath, memo: memoModel)
+    }
 }

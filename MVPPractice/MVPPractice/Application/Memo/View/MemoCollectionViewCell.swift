@@ -17,6 +17,7 @@ final class MemoCollectionViewCell: UICollectionViewCell {
         view.textColor = .black
         view.font = .systemFont(ofSize: 16)
         view.textAlignment = .left
+        view.numberOfLines = 0
         return view
     }()
     
@@ -37,7 +38,9 @@ final class MemoCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(contentLabel)
         contentLabel.translatesAutoresizingMaskIntoConstraints = false
         contentLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        contentLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12).isActive = true
         contentLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20).isActive = true
-        contentLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 20).isActive = true
+        contentLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12).isActive = true
+        contentLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20).isActive = true
     }
 }
