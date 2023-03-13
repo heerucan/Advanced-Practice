@@ -5,7 +5,7 @@
 
 ### troubleShooting
 
-1. ViewController에서 Presenter를 가져오기 위해서 의존성주입하기
+**1. ViewController에서 Presenter를 가져오기 위해서 의존성주입하기**
 - Presenter의 인스턴스를 생성한 후에, 생성자에서 필요한 모든 종속성(여기서는 Presenter에게 Model 인스턴스를 생성해서 주입해야 한다)을 제공해야 한다. ("의존성 주입")
 - 생성자를 통한 의존성 주입이 보편적이다. 이유는 인스턴스 생성 시점에 의존성 주입이 가능하기 때문에 코드의 의존성이 명확하게 나타나기 때문이다. 그래서 유지보수성이 높아진다.
     - 생성자 기반 의존성 주입을 하려면, SceneDelegate에서 해줘야 하려나?
@@ -25,7 +25,7 @@
 
 <br>
 
-2. 삭제기능 구현 시 발생한 문제
+**2. 삭제기능 구현 시 발생한 문제**
 - Flow : 사용자가 삭제버튼을 누르면  View -> Presenter의 deleteSelectedMemo(for:)에게 삭제한 indexPath를 전달하며 플로우가 시작된다.
 ```
     private func createLayout() -> UICollectionViewLayout {
@@ -80,14 +80,19 @@ final class MemoPresenter: MemoPresenterProtocol {
 
 <br>
 
-3. apply()를 통해 스냅샷을 update하자!
+**3. apply()를 통해 스냅샷을 update하자!**
 - View에서 Pesenter를 통해 모델을 가져와 UI를 갱신해줘야 한다면, 해당 코드를 꼭 작성해야 한다. DiffableDataSource에서는 performBatchesUpdate 대신 apply를 통해 스무스한 애니메이션을 제공하기 때문에 꼭 쓰자.
 
 <br>
 
-4. DiffableDataSource에서 삭제를 하는 방법
+**4. DiffableDataSource에서 삭제를 하는 방법**
 - deleteItems를 통해서 구현이 가능한데, 이때 나의 경우에는 해당 셀의 indexPath를 전달항 상황이기에 dataSource의 itemIdentifier에 접근하자
 ```
 dataSource.itemIdentifier(for: indexPath)
 ```
 
+<br>
+
+### 새로운 사실
+**1. reconfigureItems**
+- iOS15부터 reconfigureItems이 reloadItems의 기능으로 새롭게 나왔다고 한다. 차이점은 reconfigureItems는 기존에 있는 셀을 재사용하는 거다. 기존 deque하고 새로 셀을 구성했던 것과 다르게. 그래서 좀 더 빠르다.
