@@ -7,14 +7,18 @@
 
 import UIKit
 
+import XMLCoder
+
 final class XMLViewController: UIViewController {
     
-    private var xmlParser = XMLParser()
-    private var element = "" // 태그가 들어갈 변수
+    // MARK: - Property
+    
+    private let url = "http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.xml?key=f5eef3421c602c6cb7ea224104795888&targetDt=20230301"
+    
+    private let xmlParserManager = XMLParserManager()
+    
     private var movieItems = [[String: String]]()
-    private var movieItem = [String: String]()
-    private var movieTitle = ""
-    private var content = ""
+    private var dailyBoxOfficeList = [DailyBoxOffice]()
     
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
     
@@ -32,6 +36,7 @@ final class XMLViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUIandLayout()
+        getData()
     }
     
     // MARK: - Set up UI and Layout
@@ -61,53 +66,20 @@ final class XMLViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
     }
     
+    // MARK: - XMLCoder Parsing Method
+
+    private func getData() {
+        dailyBoxOfficeList = []
+        let movie = try! XMLDecoder().decode(Movie.self, from: Data(contentsOf: URL(string: url)!))
+        dailyBoxOfficeList.append(contentsOf: movie.dailyBoxOfficeList.dailyBoxOffice)
+        tableView.reloadData()
+    }
+    
     // MARK: - @objc
     
     @objc private func touchupRequestButton() {
-        let url = "http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.xml?key=f5eef3421c602c6cb7ea224104795888&targetDt=20230301"
-        guard let xmlParser = XMLParser(contentsOf: URL(string: url)!) else {
-            return print("url error")
-        }
-        xmlParser.delegate = self
-        xmlParser.parse()
-    }
-}
-
-// MARK: - XML Parsing
-
-extension XMLViewController: XMLParserDelegate {
-    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
-        print("========== 태그 시작 ===========", parser.lineNumber, elementName)
-        element = elementName
-        if elementName == "dailyBoxOffice" {
-            movieItem = [String: String]()
-            // 한 번 파싱 후 변수에 들어있는 값 비워주기
-            movieTitle = ""
-            content = ""
-        }
-    }
-    
-    func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
-        print("========== 태그 끝 ===========", parser.lineNumber, elementName)
-        if elementName == "dailyBoxOffice" {
-            movieItem["movieNm"] = movieTitle
-            movieItem["openDt"] = content
-            movieItems.append(movieItem)
-            tableView.reloadData()
-        }
-    }
-    
-    func parser(_ parser: XMLParser, foundCharacters string: String) {
-        print("========== 태그 사이 문자열 ===========")
-        if element == "openDt" {
-            content = string
-        } else if element == "movieNm" {
-            movieTitle = string
-        }
-    }
-    
-    func parser(_ parser: XMLParser, parseErrorOccurred parseError: Error) {
-        print("========== 파싱 중 오류 ===========", parseError)
+        xmlParserManager.getData(url: url)
+        movieItems = xmlParserManager.movieItems
     }
 }
 
@@ -115,14 +87,14 @@ extension XMLViewController: XMLParserDelegate {
 
 extension XMLViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return movieItems.count
+        return dailyBoxOfficeList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell = UITableViewCell(style: UITableViewCell.CellStyle.subtitle, reuseIdentifier: "cell")
-        cell.textLabel?.text = movieItems[indexPath.row]["movieNm"]
-        cell.detailTextLabel?.text = movieItems[indexPath.row]["openDt"]
+        cell.textLabel?.text = dailyBoxOfficeList[indexPath.row].movieNm
+        cell.detailTextLabel?.text = dailyBoxOfficeList[indexPath.row].openDt
         return cell
     }
 }
