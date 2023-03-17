@@ -135,7 +135,7 @@ private var movieItems = [[String: String]]()
 
 <br>
 
-![스크린샷 2023-03-15 오전 11 59 33(https://userimages.githubusercontent.com/63235947/225204181-4335e3ad-e875-41b0-bb00-d50b39b6c48c.png)
+![스크린샷 2023-03-15 오전 11 59 33](https://userimages.githubusercontent.com/63235947/225204181-4335e3ad-e875-41b0-bb00-d50b39b6c48c.png)
 
 <br>
 
