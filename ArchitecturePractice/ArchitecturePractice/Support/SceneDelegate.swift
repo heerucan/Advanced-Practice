@@ -18,7 +18,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let scene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: scene)
-        let initialViewController = CounterViewController(reactor: CounterViewReactor())
+        let initialViewController = FruitViewController(reactor: FruitViewReactor())
         initialViewController.view.backgroundColor = .systemBackground
         window?.rootViewController = initialViewController
         window?.makeKeyAndVisible()

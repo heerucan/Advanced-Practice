@@ -7,8 +7,20 @@
 
 import Foundation
 
+import RxSwift
+
 protocol ViewModelType {
     associatedtype Input
     associatedtype Output
     func transform(input: Input) -> Output
+}
+
+final class MemoViewModel: ViewModelType {
+    
+    struct Input { }
+    struct Output { }
+    
+    func transform(input: Input) -> Output {
+        return Output()
+    }
 }
