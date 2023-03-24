@@ -134,7 +134,7 @@ extension GithubReactor {
     /// 1. 위 url 메소드를 기반으로 서버통신 후 받아온 응답값을 가져와
     /// 2. repos, nextPage를 반환
     private func search(query: String?, page: Int) -> Observable<(repos: [String], nextPage: Int?)> {
-        let emptyResult: ([String], Int?) = ([], nil)
+        let emptyResult: ([String], Int?) = (["검색 결과가 없어요"], 0)
         guard let url = url(for: query, page: page) else { return .just(emptyResult) }
         return URLSession.shared.rx.json(url: url)
             .map { json -> ([String], Int?) in
